@@ -1,7 +1,7 @@
 import Service from './service';
 
 export default class App {
-  sevice = new Service()
+  service = new Service()
 
   init = async () => {
     this.covidData = await this.service.getCOVIDData();
