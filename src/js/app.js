@@ -1,17 +1,18 @@
 import Service from './service';
+import Table from './table';
 
 export default class App {
-  sevice = new Service()
+  service = new Service();
+
+  table = new Table();
 
   init = async () => {
     this.covidData = await this.service.getCOVIDData();
     this.countriesPopulationAndFlags = await this.service.getPopulationAndFlag();
-
-    // this.update();
-  }
+    this.update();
+  };
 
   update = () => {
-    // call components update methods
-    // setEventListeners - ??
-  }
+    this.table.showTable(this.covidData);
+  };
 }
