@@ -4,8 +4,6 @@ import Table from './table';
 export default class App {
   service = new Service();
 
-  table = new Table();
-
   init = async () => {
     this.covidData = await this.service.getCOVIDData();
     this.countriesPopulationAndFlags = await this.service.getPopulationAndFlag();
@@ -13,6 +11,10 @@ export default class App {
   };
 
   update = () => {
-    this.table.showTable(this.covidData);
+    this.table = new Table(
+      this.covidData,
+      this.countriesPopulationAndFlags,
+    );
+    this.table.showTable();
   };
 }
