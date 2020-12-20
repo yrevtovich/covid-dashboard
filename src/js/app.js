@@ -1,21 +1,26 @@
 /* eslint-disable max-len */
 import Service from './service';
-import List from './list';
+import list from './list';
+import { Keyboard } from './keyboard';
 
 export default class App {
-  service = new Service()
+  service = new Service();
+
+  keyboard = new Keyboard();
 
   init = async () => {
     this.covidData = await this.service.getCOVIDData();
     this.countriesPopulationAndFlags = await this.service.getPopulationAndFlag();
-    this.fullCovidData = this.covidData.Countries.map((element) => Object.assign(element, this.countriesPopulationAndFlags.filter(
-      (el) => el.name === element.Country,
-    )[0]));
+    this.fullCovidData = this.covidData.Countries.map((element) => Object.assign(
+      element,
+      this.countriesPopulationAndFlags.filter(
+        (el) => el.name === element.Country,
+      )[0],
+    ));
     this.update();
-  }
+  };
 
   update = () => {
-    this.list = new List(this.fullCovidData);
-    this.list.showList();
-  }
+    list(this.fullCovidData);
+  };
 }

@@ -1,76 +1,123 @@
+/* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 import { classNames } from './constants';
 
-export default class List {
-  constructor(covidData) {
-    this.covidData = covidData;
-    this.covidDataByCases = this.covidData.sort(
-      (a, b) => (a.TotalConfirmed < b.TotalConfirmed ? 1 : -1),
-    );
-  }
+const list = (covidData) => {
+  const copyCovidDataForCases = [...covidData];
+  const covidDataByCases = copyCovidDataForCases.sort((a, b) => (a.TotalConfirmed < b.TotalConfirmed ? 1 : -1));
+  const copyCovidDataForDeaths = [...covidData];
+  const covidDataByDeaths = copyCovidDataForDeaths.sort((a, b) => (a.TotalDeaths < b.TotalDeaths ? 1 : -1));
+  const copyCovidDataForRecovery = [...covidData];
+  const covidDataByRecovery = copyCovidDataForRecovery.sort((a, b) => (a.NewRecovered < b.NewRecovered ? 1 : -1));
+  const selectParams = classNames.listParamsSelect;
+  const showCountryInList = (selectedCountry) => {
+    classNames.listResults.append(selectedCountry);
+  };
 
-    showList = () => {
-      const listControl = document.createElement('div');
-      listControl.classList.add('list-control');
+  const renderSearchValues = (covData, selectedValue, inputValue) => {
+    const result = covData
+      .map((el) => {
+        el.Country = el.Country.toLowerCase();
+        return el;
+      })
+      .filter((element) => element.Country.includes(inputValue));
+    result.forEach((element) => {
+      const foundCountryWrapper = document.createElement('div');
+      foundCountryWrapper.classList.add('found-country-wrapper');
 
-      const countryInput = document.createElement('input');
-      countryInput.classList.add('country-input');
-      countryInput.addEventListener('input', (e) => {
-        this.renderSearchValues(e.target.value);
-      });
+      const foundCountryName = document.createElement('div');
+      foundCountryName.textContent = element.Country;
+      foundCountryName.classList.add('found-country-name');
 
-      const paramsSelect = document.createElement('select');
-      paramsSelect.classList.add('params-select');
+      const foundCountryFlag = document.createElement('div');
+      foundCountryFlag.classList.add('found-country-flag');
+      foundCountryFlag.style = `background-image: url(${element.flag})`;
 
-      const togglePeriod = document.createElement('input');
-      togglePeriod.classList.add('toggle-period');
-      togglePeriod.setAttribute('type', 'checkbox');
+      const foundCountryValue = document.createElement('div');
+      foundCountryValue.textContent = element.[selectedValue];
+      foundCountryValue.classList.add('found-country-value');
 
-      const toggleQuantity = document.createElement('input');
-      toggleQuantity.classList.add('toggle-quantity');
-      toggleQuantity.setAttribute('type', 'checkbox');
-
-      const listWrapper = document.createElement('div');
-      listWrapper.classList.add('list-wrapper');
-
-      this.covidDataByCases.forEach((element) => {
-        const listCountryWrapper = document.createElement('div');
-        listCountryWrapper.classList.add('list-country-wrappew');
-
-        const listCountry = document.createElement('div');
-        listCountry.textContent = element.Country;
-        listCountry.classList.add('list-country');
-
-        const listFlag = document.createElement('div');
-        listFlag.classList.add('list-flag');
-        listFlag.style = `background-image: url(${element.flag})`;
-
-        const listCountryValue = document.createElement('div');
-        listCountryValue.textContent = element.TotalConfirmed;
-        listCountryValue.classList.add('list-country-value');
-
-        listCountryWrapper.append(listFlag, listCountry, listCountryValue);
-        listWrapper.append(listCountryWrapper);
-      });
-
-      classNames.listContainer.append(listControl, listWrapper);
-      listControl.append(
-        paramsSelect,
-        togglePeriod,
-        'day/allTime',
-        toggleQuantity,
-        'absolut/100k',
-        countryInput,
+      foundCountryWrapper.append(
+        foundCountryFlag,
+        foundCountryName,
+        foundCountryValue,
       );
-      paramsSelect.innerHTML = '<option>by Cases</option><option>by Deaths</option><option>by Recovery</option>';
-    }
+      classNames.listResults.append(foundCountryWrapper);
+      foundCountryWrapper.addEventListener('click', (e) => {
+        classNames.listResults.innerHTML = ' ';
+        showCountryInList(e.target.parentElement);
+      });
+    });
+  };
 
-    renderSearchValues = (inputValue) => {
-      const result = this.covidDataByCases
-        .map((el) => {
-          el.Country = el.Country.toLowerCase();
-          return el;
-        }).filter((element) => element.Country.includes(inputValue));
-      console.log(result);
+  const showList = (covData, selectedValue) => {
+    covData.forEach((element) => {
+      const listCountryWrapper = document.createElement('div');
+      listCountryWrapper.classList.add('list-country-wrapper');
+
+      const listCountry = document.createElement('div');
+      listCountry.textContent = element.Country;
+      listCountry.classList.add('list-country-name');
+
+      const listFlag = document.createElement('div');
+      listFlag.classList.add('list-country-flag');
+      listFlag.style = `background-image: url(${element.flag})`;
+
+      const listCountryValue = document.createElement('div');
+      listCountryValue.textContent = element[selectedValue];
+      listCountryValue.classList.add('list-country-value');
+
+      listCountryWrapper.append(listFlag, listCountry, listCountryValue);
+      classNames.listResults.append(listCountryWrapper);
+    });
+
+    classNames.listSearchInput.addEventListener('select', (e) => {
+      if (e.target.value.length === 0) {
+        classNames.listResults.innerHTML = ' ';
+        covData.forEach((element) => {
+          const listCountryWrapper = document.createElement('div');
+          listCountryWrapper.classList.add('list-country-wrapper');
+
+          const listCountry = document.createElement('div');
+          listCountry.textContent = element.Country;
+          listCountry.classList.add('list-country-name');
+
+          const listFlag = document.createElement('div');
+          listFlag.classList.add('list-country-flag');
+          listFlag.style = `background-image: url(${element.flag})`;
+
+          const listCountryValue = document.createElement('div');
+          listCountryValue.textContent = element[selectedValue];
+          listCountryValue.classList.add('list-country-value');
+
+          listCountryWrapper.append(listFlag, listCountry, listCountryValue);
+          classNames.listResults.append(listCountryWrapper);
+        });
+      } else if (e.target.value.length >= 1) {
+        classNames.listResults.innerHTML = ' ';
+        renderSearchValues(covData, selectedValue, e.target.value);
+      }
+    });
+  };
+
+  selectParams.addEventListener('change', (e) => {
+    switch (e.target.value) {
+      case 'by Cases':
+        classNames.listResults.innerHTML = ' ';
+        showList(covidDataByCases, 'TotalConfirmed');
+        break;
+      case 'by Deaths':
+        classNames.listResults.innerHTML = ' ';
+        showList(covidDataByDeaths, 'TotalDeaths');
+        break;
+      case 'by Recovery':
+        classNames.listResults.innerHTML = ' ';
+        showList(covidDataByRecovery, 'TotalRecovered');
+        break;
+      default:
+        break;
     }
-}
+  });
+  showList(covidDataByCases, 'TotalConfirmed');
+};
+export default list;
