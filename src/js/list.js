@@ -31,7 +31,7 @@ const list = (covidData) => {
 
       const foundCountryFlag = document.createElement('div');
       foundCountryFlag.classList.add('found-country-flag');
-      foundCountryFlag.style = `background-image: url(${element.flag})`;
+      foundCountryFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
 
       const foundCountryValue = document.createElement('div');
       foundCountryValue.textContent = element.[selectedValue];
@@ -61,7 +61,8 @@ const list = (covidData) => {
 
       const listFlag = document.createElement('div');
       listFlag.classList.add('list-country-flag');
-      listFlag.style = `background-image: url(${element.flag})`;
+
+      listFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
 
       const listCountryValue = document.createElement('div');
       listCountryValue.textContent = element[selectedValue];
@@ -84,7 +85,7 @@ const list = (covidData) => {
 
           const listFlag = document.createElement('div');
           listFlag.classList.add('list-country-flag');
-          listFlag.style = `background-image: url(${element.flag})`;
+          listFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
 
           const listCountryValue = document.createElement('div');
           listCountryValue.textContent = element[selectedValue];
