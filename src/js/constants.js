@@ -23,4 +23,8 @@ export const classNames = {
   keyboardWin: 'keyboard__win',
   keyboardKeyActive: 'keyboard__key_active',
   keyboardTextarea: '.list-search-input',
+  tdCountry: 'tdCountry',
+  tdCases: 'tdCases',
+  tdDeaths: 'tdDeaths',
+  tdRecovered: 'tdRecovered',
 };

@@ -135,6 +135,15 @@ h1 {
   @include component();
   margin-bottom: 10px;
   width: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  tbody{
+    tr:hover{
+      cursor: pointer;
+      background-color: grey
+    }
+  }
 }
 
 .chart {
