@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Covid dashboard</title>
   <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 </head>
 <body>  
   <header class="header">
@@ -12,7 +16,19 @@
   </header>
   <main class="main">
     <div class="list"></div>
-    <div class="map"></div>
+    <div class="map">
+      <div class="map__locations" id="map"></div>
+      <div class="map__info">
+        <div class="map__legend"></div>          
+        <div class="map__options">
+          <select class="map__select">
+            <option value="Confirmed" selected>Confirmed</option>
+            <option value="Recovered">Recovered</option>
+            <option value="Deaths">Deaths</option>
+          </select>
+        </div>       
+      </div>
+    </div>
     <div class="wrapper">
       <div class="table"></div>
       <div class="chart"></div>

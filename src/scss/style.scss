@@ -3,6 +3,7 @@
 
 $mainBackgroundColor: #242424;
 $mainFontColor: #ffffff;
+$colorOrange: #ffa500;
 
 @mixin component {
   // margin: 0 10px;
@@ -67,7 +68,33 @@ h1 {
 .map {
   @include wrapper();
   @include component();
+  display: flex;
+  flex-direction: column;
   width: 50%;
+
+  &__locations {
+    height: 100%;
+    background-color: transparent;
+  }
+
+  &__info {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  &__legend {
+    height: 200px;
+  }
+
+  &__select {
+    margin-bottom: 20px;
+    width: 100%;
+    color: #fff;
+    background: #3f3f3fe3;
+    border-radius: 3px;
+  }
 }
 
 .wrapper {
@@ -115,8 +142,67 @@ h1 {
       }
 
       &:hover {
-        color: #ffa500;
+        color: $colorOrange;
       }
+    }
+  }
+}
+
+.options {
+  &__type {
+    margin-bottom: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  &__value {
+    margin-bottom: 10px;
+  }
+
+  &__variant {
+    padding: 2px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__label {
+    cursor: pointer;
+  }
+
+  &__input {
+    margin-right: 10px;
+    width: 14px;
+    height: 14px;
+    position: relative;
+    z-index: 0;
+
+    &:before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-color: $mainBackgroundColor;
+      border: 1px solid $mainFontColor;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      box-sizing: border-box;
+    }
+
+    &_checked:after {
+      content: '';
+      display: block;
+      width: 50%;
+      height: 50%;
+      background-color: $colorOrange;
+      // border: 1px solid $mainFontColor;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-sizing: border-box;
     }
   }
 }
