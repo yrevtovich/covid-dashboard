@@ -11,7 +11,7 @@ const classNames = {
 };
 
 export default class Switcher {
-  options = [
+  optionsConfig = [
     {
       name: 'values',
       className: classNames.valueOptions,
@@ -46,7 +46,8 @@ export default class Switcher {
     },
   ]
 
-  init = (container, setOptions) => {
+  init = (container, setOptions, options) => {
+    this.options = options;
     this.draw(container);
     this.setEvents(container, setOptions);
   }
@@ -55,7 +56,7 @@ export default class Switcher {
     const options = document.createElement('div');
     options.classList.add(classNames.options);
 
-    const optionBlocks = this.options.map(this.createOptionsTypeBlock);
+    const optionBlocks = this.optionsConfig.map(this.createOptionsTypeBlock);
 
     options.append(...optionBlocks);
     container.append(options);
@@ -90,6 +91,7 @@ export default class Switcher {
 
     const input = document.createElement('input');
     input.classList.add(...defaultClass);
+    input.defaultChecked = defaultClass.length > 1;
     input.type = 'radio';
     input.id = type;
     input.name = name;
@@ -131,5 +133,31 @@ export default class Switcher {
 
       setOptions(options);
     });
+  }
+
+  updateOptions = ({ isAbsoluteValues, isAllPeriod }) => {
+    const inputArray = [...document.getElementsByClassName(classNames.optionsInput)];
+    inputArray.forEach((input) => input.classList.remove(classNames.optionsInputChecked));
+
+    const checked = inputArray.filter((input) => {
+      let result = false;
+      switch (input.id) {
+        case 'absolute':
+          result = isAbsoluteValues;
+          break;
+        case 'total':
+          result = isAllPeriod;
+          break;
+        case 'population':
+          result = !isAbsoluteValues;
+          break;
+        default:
+          result = !isAllPeriod;
+          break;
+      }
+      return result;
+    });
+
+    checked.forEach((input) => input.classList.add(classNames.optionsInputChecked));
   }
 }

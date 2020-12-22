@@ -36,7 +36,7 @@ export default class Map {
     const { optionsContainer } = this;
 
     this.switcher = new Switcher();
-    this.switcher.init(optionsContainer, setOptions);
+    this.switcher.init(optionsContainer, setOptions, options);
 
     this.covidData = covidData;
     this.options = options;
@@ -125,6 +125,7 @@ export default class Map {
   update = (country = this.country, options) => {
     this.country = country;
     this.options = options;
+    this.switcher.updateOptions(options);
   }
 
   setEvents = () => {
