@@ -34,7 +34,7 @@ const list = (covidData) => {
       foundCountryFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
 
       const foundCountryValue = document.createElement('div');
-      foundCountryValue.textContent = element.[selectedValue];
+      foundCountryValue.textContent = element[selectedValue];
       foundCountryValue.classList.add('found-country-value');
 
       foundCountryWrapper.append(
