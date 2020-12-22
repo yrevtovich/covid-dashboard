@@ -117,8 +117,9 @@ export default class Map {
   }
 
   addMarker = () => {
-    const marker2 = new L.Marker([46.82, 8.23]);
-    marker2.addTo(this.map);
+    const icon = L.divIcon({ className: 'marker' });
+    const marker = new L.Marker([46.82, 8.23], { icon });
+    marker.addTo(this.map);
   }
 
   update = (country = this.country, options) => {
