@@ -1,24 +1,11 @@
 import { classNames } from './constants';
 
 export default class Table {
-  constructor(covidData, populationAndFlag) {
+  constructor(covidData) {
     this.covidData = covidData;
-    this.populationAndFlag = populationAndFlag;
   }
 
   showTable = () => {
-    const tableControl = document.createElement('div');
-    tableControl.classList.add('table-control');
-
-    const togglePeriod = document.createElement('input');
-    togglePeriod.setAttribute('type', 'checkbox');
-
-    const toggleQuantity = document.createElement('input');
-    toggleQuantity.setAttribute('type', 'checkbox');
-
-    const buttonFullScreen = document.createElement('button');
-    buttonFullScreen.textContent = 'full screen';
-
     this.table = document.createElement('table');
     const thead = document.createElement('thead');
     thead.innerHTML = `
@@ -28,47 +15,43 @@ export default class Table {
     <th style="width: 15%;">Recovered</th>
   `;
     const tbody = document.createElement('tbody');
-    this.covidData.Countries.forEach((country) => {
+    this.covidData.forEach((country) => {
       const tr = document.createElement('tr');
 
       const tdCountry = document.createElement('td');
       tdCountry.textContent = country.Country;
-      tdCountry.classList.add('tdCountry');
+      tdCountry.classList.add(classNames.tdCountry);
       tr.append(tdCountry);
 
       const tdCases = document.createElement('td');
       tdCases.textContent = country.TotalConfirmed;
+      tdCases.classList.add(classNames.tdCases);
       tr.append(tdCases);
 
       const tdDeaths = document.createElement('td');
       tdDeaths.textContent = country.TotalDeaths;
+      tdDeaths.classList.add(classNames.tdDeaths);
       tr.append(tdDeaths);
 
       const tdRecovered = document.createElement('td');
       tdRecovered.textContent = country.TotalRecovered;
+      tdRecovered.classList.add(classNames.tdRecovered);
       tr.append(tdRecovered);
 
       tbody.append(tr);
     });
     this.table.append(thead);
     this.table.append(tbody);
-    classNames.tableContainer.append(tableControl, this.table);
-    tableControl.append(
-      togglePeriod,
-      'day/allTime',
-      toggleQuantity,
-      'absolut/100k',
-      buttonFullScreen,
-    );
+    classNames.tableContainer.append(this.table);
 
-    this.table.addEventListener('click', (e) => {
-      this.showCountryInTable(e.target.innerText);
+    tbody.addEventListener('click', (e) => {
+      this.showCountryInTable(e.target.parentElement.firstChild.innerText);
     });
   };
 
   showCountryInTable = (selectedCountry) => {
     this.table.innerHTML = '';
-    const oneCountryData = this.covidData.Countries.filter(
+    const oneCountryData = this.covidData.filter(
       (element) => element.Country === selectedCountry,
     )[0];
 

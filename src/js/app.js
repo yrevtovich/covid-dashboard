@@ -7,13 +7,18 @@ export default class App {
   init = async () => {
     this.covidData = await this.service.getCOVIDData();
     this.countriesPopulationAndFlags = await this.service.getPopulationAndFlag();
+    this.fullCovidData = this.covidData.Countries.map((element) => Object.assign(
+      element,
+      this.countriesPopulationAndFlags.filter(
+        (el) => el.name === element.Country,
+      )[0],
+    ));
     this.update();
   };
 
   update = () => {
     this.table = new Table(
-      this.covidData,
-      this.countriesPopulationAndFlags,
+      this.fullCovidData,
     );
     this.table.showTable();
   };
