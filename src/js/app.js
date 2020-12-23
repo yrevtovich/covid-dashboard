@@ -12,45 +12,26 @@ export default class App {
   }
 
   init = async () => {
-    this.service.getCOVIDData()
-      .then((res) => {
-        // console.log(res);
-        this.covidData = res;
-        return this.service.getPopulationAndFlag();
-      })
-      .then((res) => {
-        // console.log(res);
-        this.countriesPopulationAndFlags = res;
+    try {
+      const data = await Promise.all([
+        this.service.getCOVIDData(), this.service.getPopulationAndFlag(),
+      ]);
 
-        this.fullCovidData = this.covidData.Countries.map((element) => (
-          Object.assign(element, this.countriesPopulationAndFlags.filter(
-            (el) => el.name === element.Country,
-          )[0])));
+      [this.covidData, this.countriesPopulationAndFlags] = data;
 
-        this.map.init(this.setCountry, this.fullCovidData, this.options, this.setOptions);
-      })
-      .catch((e) => {
-        console.log('error', e);
-      });
+      if (!this.covidData || !this.countriesPopulationAndFlags) {
+        throw new Error();
+      }
 
-    // try {
-    //   const data = await Promise.all([
-    //     this.service.getCOVIDData(), this.service.getPopulationAndFlag(),
-    //   ]);
+      this.fullCovidData = this.covidData.Countries.map((element) => (
+        Object.assign(element, this.countriesPopulationAndFlags.filter(
+          (el) => el.name === element.Country,
+        )[0])));
 
-    //   console.log(data);
-
-    //   [this.covidData, this.countriesPopulationAndFlags] = data;
-
-    //   this.fullCovidData = this.covidData.Countries.map((element) => (
-    //     Object.assign(element, this.countriesPopulationAndFlags.filter(
-    //       (el) => el.name === element.Country,
-    //     )[0])));
-
-    //   this.map.init(this.setCountry, this.fullCovidData, this.options, this.setOptions);
-    // } catch (e) {
-    //   console.log(e);
-    // }
+      this.map.init(this.setCountry, this.fullCovidData, this.options, this.setOptions);
+    } catch (e) {
+      console.log(e.message);
+    }
   }
 
   update = () => {

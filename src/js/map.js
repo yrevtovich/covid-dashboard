@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 
 import Switcher from './switcher';
+import ResizeButton from './resizeButton';
 import geomap from './geomap';
 // import countries_data from './newGeoJSON';
 
@@ -41,9 +42,11 @@ export default class Map {
     zoom: 1,
     worldCopyJump: true,
     maxBounds: [L.latLng(-270, -180), L.latLng(270, 180)],
+    animate: true,
   }
 
   containers = {
+    map: document.querySelector(`.${classNames.map}`),
     options: document.querySelector(`.${classNames.mapOptions}`),
     legend: document.querySelector(`.${classNames.mapLegend}`),
   }
@@ -55,6 +58,9 @@ export default class Map {
 
     this.switcher = new Switcher();
     this.switcher.init(containers.options, setOptions, options);
+
+    this.resizeButton = new ResizeButton();
+    this.resizeButton.init(containers.map);
 
     this.covidData = covidData;
     this.options = options;
