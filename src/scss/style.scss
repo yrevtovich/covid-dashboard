@@ -3,13 +3,17 @@
 
 $mainBackgroundColor: #242424;
 $mainFontColor: #ffffff;
+$colorOrange: #ffa500;
+$borderColorContainer:  #8080802b;
+$borderColorButton: #808080;
+$colorButton: #ece9e9;
 
 @mixin component {
   // margin: 0 10px;
   padding: 10px;
   height: 100%;
   background-color: #c4c4c414;
-  border: 1px solid #8080802b;
+  border: 1px solid $borderColorContainer;
   border-radius: 5px;
   box-sizing: border-box;
 }
@@ -119,7 +123,43 @@ h1 {
 .map {
   @include wrapper();
   @include component();
+  display: flex;
+  flex-direction: column;
   width: 50%;
+  position: relative;
+  overflow: overlay;
+
+  &__locations {
+    height: 100%;
+    background-color: transparent;
+  }
+
+  &__info {
+    padding: 20px;
+    width: 100%;
+    background-color: $mainBackgroundColor;    /////////////////////////////
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    // position: absolute;
+    // left: 0;
+    // bottom: 0;
+    box-sizing: border-box;
+    // z-index: 1000;
+  }
+
+  // &__legend {
+  //   height: 200px;
+  // }
+
+  &__select {
+    margin-bottom: 20px;
+    width: 100%;
+    color: #fff;
+    background: #3f3f3fe3;
+    border-radius: 3px;
+  }
 }
 
 .wrapper {
@@ -176,10 +216,143 @@ h1 {
       }
 
       &:hover {
-        color: #ffa500;
+        color: $colorOrange;
       }
     }
   }
+}
+
+.options {
+  &__type {
+    margin-bottom: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  &__value {
+    margin-bottom: 10px;
+  }
+
+  &__variant {
+    padding: 2px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__label {
+    cursor: pointer;
+  }
+
+  &__input {
+    margin-right: 10px;
+    width: 14px;
+    height: 14px;
+    position: relative;
+    z-index: 0;
+
+    &:before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-color: $mainBackgroundColor;
+      border: 1px solid $mainFontColor;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      box-sizing: border-box;
+    }
+
+    &_checked:after {
+      content: '';
+      display: block;
+      width: 50%;
+      height: 50%;
+      background-color: $colorOrange;
+      // border: 1px solid $mainFontColor;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-sizing: border-box;
+    }
+  }
+}
+
+// .marker {
+//   width: 30px;
+//   height: 30px;
+//   background-color: #ff0000;
+//   border: none;
+//   border-radius: 50%;
+//   opacity: 0.5;
+// }
+
+.legend {
+  &__list-item {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__icon {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.resize-button {
+  width: 25px;
+  height: 25px;
+  // background-color: $mainBackgroundColor;
+  background-color: $colorButton;
+  border: 2px solid $colorButton;
+  border-radius: 2px;
+  box-sizing: border-box;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  z-index: 1000;
+  transition: all 0.2s linear;
+  box-shadow: 0 0 20px #000;
+
+  &:hover {
+    box-shadow: 0 0 10px $colorOrange;
+  }
+
+  &_expand {
+    background-image: url(../assets/images/expand.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  &_expand {
+    background-image: url(../assets/images/expand.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  &_reduce {
+    background-image: url(../assets/images/reduce.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+}
+
+.expand {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: $mainBackgroundColor;
+  border: none;
+  border-radius: 0;
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 .textarea {
     margin-bottom: 20px;
