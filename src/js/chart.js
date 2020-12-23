@@ -80,6 +80,7 @@ export default class CovidChart {
     this.chart = new Chart(ctx, this.chartConfig);
 
     this.setEvents(select);
+    this.setConfig();
   }
 
   setChartConfig = (configData, key, parameters) => {
@@ -107,14 +108,14 @@ export default class CovidChart {
       } else {
         this.countryData = await this.service.getDailyCountryCOVIDData(this.country);
         configData = this.setCountryDataConfig();
-
-        const { config, date } = configData;
-
-        this.clearCharts();
-        this.chart.options.title.text = this.country || 'Global';
-        this.chart.data.labels.push(...date);
-        this.chart.data.datasets.push(config);
       }
+
+      const { config, date } = configData;
+
+      this.clearCharts();
+      this.chart.options.title.text = this.country || 'Global';
+      this.chart.data.labels.push(...date);
+      this.chart.data.datasets.push(config);
     } catch (e) {
       this.clearCharts();
       this.chart.options.title.text = 'Not found';

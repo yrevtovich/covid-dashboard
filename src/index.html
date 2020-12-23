@@ -17,19 +17,12 @@
   <main class="main">
     <div class="list">
       <div class="list-control">
-        <select id="list-params-select">
-          <option>by Cases</option>
-          <option>by Deaths</option>
-          <option>by Recovery</option>
+        <select class="list__select">
+          <option value="Confirmed" selected>Confirmed</option>
+            <option value="Recovered">Recovered</option>
+            <option value="Deaths">Deaths</option>
         </select>
-        <div class="toggle-period">
-          <input type="checkbox" />
-          <span>day/allTime</span>
-        </div>
-        <div class="toggle-quantity">
-          <input type="checkbox" />
-          <span>absolut/100k</span>
-        </div>
+        <div class="list__options"></div>
         <div class="list-search">
           <input class="list-search-input" type="text" />
           <span><button class="button">virtual keyboard</button></span>
@@ -53,14 +46,7 @@
     <div class="wrapper">
       <div class="table">
         <div class="table-control">
-          <div class="toggle-period">
-            <input type="checkbox" />
-            <span>day/allTime</span>
-          </div>
-          <div class="toggle-quantity">
-            <input type="checkbox" />
-            <span>absolut/100k</span>
-          </div>
+          <div class="table__options"></div>
         </div>
       </div>
       <div class="chart">

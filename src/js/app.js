@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import Service from './service';
 import Map from './map';
-import list from './list';
+import List from './list';
 import { Keyboard } from './keyboard'; // ----???
 import Table from './table';
 import CovidChart from './chart';
@@ -14,14 +14,18 @@ export default class App {
 
   map = new Map()
 
-  chart = new CovidChart();
+  chart = new CovidChart()
+
+  table = new Table()
+
+  list = new List()
 
   options = {
     isAllPeriod: true,
     isAbsoluteValues: true,
   }
 
-  parameter = 'Confirmed'
+  selectOption = 'Confirmed'
 
   init = async () => {
     try {
@@ -47,11 +51,7 @@ export default class App {
         this.fullCovidData,
         this.options,
         this.setOptions,
-        this.selectParameter,
-      );
-
-      this.table = new Table(
-        this.fullCovidData,
+        this.setSelect,
       );
 
       this.chart.init(
@@ -60,30 +60,34 @@ export default class App {
         this.choosenCountry,
         this.fullCovidData,
         this.countriesPopulationAndFlags,
-        this.selectParameter,
+        this.setSelect,
       );
 
-      this.update();
+      this.list.init(
+        this.setCountry,
+        this.fullCovidData,
+        this.options,
+        this.setOptions,
+        this.selectOption,
+        this.setSelect,
+      );
+
+      this.table.init(
+        this.setCountry,
+        this.fullCovidData,
+        this.options,
+        this.setOptions,
+      );
     } catch (e) {
       console.log(e.message);
     }
-
-    // this.countriesPopulationAndFlags = await this.service.getPopulationAndFlag();
-
-    // this.chart.init(
-    //   this.options,
-    //   this.setOptions,
-    //   this.choosenCountry,
-    //   this.fullCovidData,
-    //   this.countriesPopulationAndFlags,
-    // );
   }
 
   update = () => {
-    list(this.fullCovidData);
-    this.map.update(this.choosenCountry, this.options, this.parameter);
-    this.table.showTable();
-    this.chart.update(this.choosenCountry, this.options, this.parameter);
+    this.map.update(this.choosenCountry, this.options, this.selectOption);
+    this.chart.update(this.choosenCountry, this.options, this.selectOption);
+    this.table.update(this.choosenCountry, this.options);
+    this.list.update(this.choosenCountry, this.options, this.selectOption);
     this.updateSelect();
   }
 
@@ -100,20 +104,20 @@ export default class App {
     this.update();
   }
 
-  selectParameter = (param) => {
-    this.parameter = param;
-    this.update();
-  }
-
   updateSelect = () => {
-    const selectArr = document.querySelectorAll('[data-params="true"]');
+    const selectArr = document.querySelectorAll('select');
     const optionsArr = [];
     selectArr.forEach((item) => optionsArr.push(...item.children));
 
     optionsArr.forEach((option) => {
-      if (option.value === this.parameter) {
+      if (option.value === this.selectOption) {
         option.selected = true;
       }
     });
+  }
+
+  setSelect = (selectOption) => {
+    this.selectOption = selectOption;
+    this.update();
   }
 }
