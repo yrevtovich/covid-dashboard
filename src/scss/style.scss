@@ -96,7 +96,8 @@ h1 {
         width: 30%;
       }
     }
-    .found-country-wrapper {
+    .found-country-wrapper {      
+      text-transform: capitalize;
       display: flex;
       background-color: grey;
       border: solid black 1px;
@@ -189,6 +190,12 @@ h1 {
 .chart {
   @include component();
   width: 100%;
+  position: relative;
+
+  & .options {
+    display: flex;
+    justify-content: space-around;
+  }
 }
 
 .footer {
@@ -466,4 +473,8 @@ h1 {
     -webkit-transform: scale(0.9, 0.9);
             transform: scale(0.9, 0.9);
     background-color: #ffb900ad;
+}
+
+canvas {
+  min-height: 300px;
 }

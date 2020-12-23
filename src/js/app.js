@@ -4,6 +4,7 @@ import Map from './map';
 import list from './list';
 import { Keyboard } from './keyboard'; // ----???
 import Table from './table';
+import CovidChart from './chart';
 
 export default class App {
   service = new Service();
@@ -11,6 +12,8 @@ export default class App {
   keyboard = new Keyboard();
 
   map = new Map()
+
+  chart = new CovidChart();
 
   options = {
     isAllPeriod: true,
@@ -37,6 +40,13 @@ export default class App {
       ));
 
       this.map.init(this.setCountry, this.fullCovidData, this.options, this.setOptions);
+
+      this.table = new Table(
+        this.fullCovidData,
+      );
+
+      this.chart.init(this.options, this.setOptions, this.choosenCountry);
+
       this.update();
     } catch (e) {
       console.log(e.message);
@@ -46,9 +56,6 @@ export default class App {
   update = () => {
     list(this.fullCovidData);
     this.map.update(this.choosenCountry, this.options);
-    this.table = new Table(
-      this.fullCovidData,
-    );
     this.table.showTable();
   }
 
