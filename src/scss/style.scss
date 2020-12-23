@@ -178,6 +178,10 @@ h1 {
   overflow: auto;
   display: flex;
   flex-direction: column;
+  position: relative;
+  .table-control{
+    display: flex;
+  }
   tbody{
     tr:hover{
       cursor: pointer;
@@ -343,6 +347,7 @@ h1 {
 }
 
 .expand {
+  z-index: 1000;
   margin: 0;
   width: 100vw;
   height: 100vh;

@@ -12,6 +12,8 @@ export default class App {
 
   map = new Map()
 
+  table = new Table()
+
   options = {
     isAllPeriod: true,
     isAbsoluteValues: true,
@@ -37,19 +39,16 @@ export default class App {
       ));
 
       this.map.init(this.setCountry, this.fullCovidData, this.options, this.setOptions);
-      this.update();
+      this.table.init(this.setCountry, this.fullCovidData, this.options, this.setOptions);
     } catch (e) {
       console.log(e.message);
     }
   }
 
   update = () => {
+    this.table.update(this.choosenCountry, this.options);
     list(this.fullCovidData);
     this.map.update(this.choosenCountry, this.options);
-    this.table = new Table(
-      this.fullCovidData,
-    );
-    this.table.showTable();
   }
 
   setCountry = (name) => {
