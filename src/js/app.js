@@ -1,10 +1,11 @@
-/* eslint-disable max-len */
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
 import Service from './service';
 import Map from './map';
 import List from './list';
 import { Keyboard } from './keyboard'; // ----???
 import Table from './table';
+import CovidChart from './chart';
 
 export default class App {
   service = new Service();
@@ -12,6 +13,8 @@ export default class App {
   keyboard = new Keyboard();
 
   map = new Map()
+
+  chart = new CovidChart()
 
   table = new Table()
 
@@ -32,8 +35,8 @@ export default class App {
 
       [this.covidData, this.countriesPopulationAndFlags] = data;
 
-      if (!this.covidData || !this.countriesPopulationAndFlags) {
-        throw new Error();
+      if (!this.covidData || !this.countriesPopulationAndFlags || this.covidData.Message) {
+        throw new Error(this.covidData.Message);
       }
 
       this.fullCovidData = this.covidData.Countries.map((element) => Object.assign(
@@ -43,18 +46,49 @@ export default class App {
         )[0],
       ));
 
-      this.map.init(this.setCountry, this.fullCovidData, this.options, this.setOptions);
-      this.table.init(this.setCountry, this.fullCovidData, this.options, this.setOptions);
-      this.list.init(this.setCountry, this.fullCovidData, this.options, this.setOptions, this.selectOption, this.setSelect);
+      this.map.init(
+        this.setCountry,
+        this.fullCovidData,
+        this.options,
+        this.setOptions,
+        this.setSelect,
+      );
+
+      this.chart.init(
+        this.options,
+        this.setOptions,
+        this.choosenCountry,
+        this.fullCovidData,
+        this.countriesPopulationAndFlags,
+        this.setSelect,
+      );
+
+      this.list.init(
+        this.setCountry,
+        this.fullCovidData,
+        this.options,
+        this.setOptions,
+        this.selectOption,
+        this.setSelect,
+      );
+
+      this.table.init(
+        this.setCountry,
+        this.fullCovidData,
+        this.options,
+        this.setOptions,
+      );
     } catch (e) {
       console.log(e.message);
     }
   }
 
   update = () => {
+    this.map.update(this.choosenCountry, this.options, this.selectOption);
+    this.chart.update(this.choosenCountry, this.options, this.selectOption);
     this.table.update(this.choosenCountry, this.options);
-    this.map.update(this.choosenCountry, this.options);
     this.list.update(this.choosenCountry, this.options, this.selectOption);
+    this.updateSelect();
   }
 
   setCountry = (name) => {
@@ -68,6 +102,18 @@ export default class App {
   setOptions = (options) => {
     this.options = options;
     this.update();
+  }
+
+  updateSelect = () => {
+    const selectArr = document.querySelectorAll('select');
+    const optionsArr = [];
+    selectArr.forEach((item) => optionsArr.push(...item.children));
+
+    optionsArr.forEach((option) => {
+      if (option.value === this.selectOption) {
+        option.selected = true;
+      }
+    });
   }
 
   setSelect = (selectOption) => {

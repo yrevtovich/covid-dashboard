@@ -99,7 +99,8 @@ h1 {
         width: 30%;
       }
     }
-    .found-country-wrapper {
+    .found-country-wrapper {      
+      text-transform: capitalize;
       display: flex;
       background-color: grey;
       border: solid black 1px;
@@ -165,7 +166,7 @@ h1 {
 
   &__select {
     margin-bottom: 20px;
-    width: 100%;
+    width: 120px;
     color: #fff;
     background: #3f3f3fe3;
     border-radius: 3px;
@@ -203,6 +204,21 @@ h1 {
 .chart {
   @include component();
   width: 100%;
+  position: relative;
+  box-sizing: border-box;
+
+  & .options {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  &__select {
+    margin-bottom: 20px;
+    width: 120px;
+    color: #fff;
+    background: #3f3f3fe3;
+    border-radius: 3px;
+  }
 }
 
 .footer {
@@ -368,6 +384,7 @@ h1 {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 10;
 }
 .textarea {
   margin-bottom: 20px;
@@ -484,4 +501,36 @@ h1 {
   -webkit-transform: scale(0.9, 0.9);
   transform: scale(0.9, 0.9);
   background-color: #ffb900ad;
+}
+
+#chart {
+  margin-bottom: 20px;
+  min-height: 200px !important;
+}
+
+.hide {
+  z-index: -1;
+}
+
+.chart.expand {
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 16px;
+
+  & .chart__wrapper {
+    min-width: 80%;
+  }
+
+  & .chart__select {
+    width: 80%;
+    max-width: 150px;
+  }
+
+  & .chart__options {
+    width: 80%;
+    max-width: 300px;
+  }
 }

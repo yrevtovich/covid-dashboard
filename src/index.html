@@ -35,7 +35,7 @@
       <div class="map__info">
         <div class="map__legend"></div>          
         <div class="map__options">
-          <select class="map__select">
+          <select class="map__select" data-params="true">
             <option value="Confirmed" selected>Confirmed</option>
             <option value="Recovered">Recovered</option>
             <option value="Deaths">Deaths</option>
@@ -49,7 +49,16 @@
           <div class="table__options"></div>
         </div>
       </div>
-      <div class="chart"></div>
+      <div class="chart">
+        <select class="chart__select" data-params="true">
+          <option value="Confirmed" selected>Confirmed</option>
+          <option value="Recovered">Recovered</option>
+          <option value="Deaths">Deaths</option>   
+        </select>
+        <div class="chart__wrapper">
+          <canvas id="chart" width="300px"></canvas>
+        </div>
+      </div>
     </div>
   </main>
   <footer class='footer'>

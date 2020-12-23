@@ -40,4 +40,6 @@ export const classNames = {
   expandButton: 'resize-button_expand',
   reduceButton: 'resize-button_reduce',
   expand: 'expand',
+  chart: 'chart',
+  chartSelect: 'chart__select',
 };

@@ -43,7 +43,7 @@ export default class Map {
 
   index = 'Confirmed'
 
-  init = (setCountry, covidData, options, setOptions) => {
+  init = (setCountry, covidData, options, setOptions, select) => {
     const { containers } = this;
 
     this.switcher = new Switcher();
@@ -57,11 +57,17 @@ export default class Map {
 
     this.drawMap(setCountry);
     this.drawLegend();
-    this.setEvents();
+    this.setEvents(select);
   }
 
   drawMap = (setCountry) => {
-    const { updateContriesStyles, showTooltip, addColorToLocation } = this;
+    const {
+      updateContriesStyles,
+      showTooltip,
+      addColorToLocation,
+      covidData,
+    } = this;
+
     this.map = new L.map(classNames.map, this.mapOptions);
 
     const geoJSONStyle = {
@@ -77,12 +83,15 @@ export default class Map {
         // const { id } = feature;
         addColorToLocation(country, countryCode);
 
+        const data = covidData.find((elem) => elem.CountryCode === countryCode);
+        const countryName = data ? data.Country : name;
+
         country.on('click', () => {
-          this.country = this.country === name ? '' : name;
+          this.country = this.country === countryName ? '' : countryName;
           setCountry(this.country);
         });
 
-        country.on('mouseover', () => showTooltip(country, name, countryCode /* , id */));
+        country.on('mouseover', () => showTooltip(country, countryName, countryCode /* , id */));
 
         country.on('mouseout', () => updateContriesStyles());
       },
@@ -127,9 +136,12 @@ export default class Map {
     this.geoJson.eachLayer((layer) => {
       const { name, iso_a2: countryCode } = layer.feature.properties;
 
+      const data = this.covidData.find((elem) => elem.CountryCode === countryCode);
+      const countryName = data ? data.Country : name;
+
       this.addColorToLocation(layer, countryCode);
 
-      if (this.country === name) {
+      if (this.country === countryName) {
         layer.setStyle({ fillColor: this.colors.choosen });
       }
     });
@@ -150,18 +162,20 @@ export default class Map {
     marker.addTo(this.map);
   }
 
-  update = (country = this.country, options) => {
+  update = (country = this.country, options, index) => {
     this.country = country;
     this.options = options;
+    this.index = index;
     this.switcher.updateOptions(options);
     this.updateContriesStyles();
     this.updateLegend();
   }
 
-  setEvents = () => {
+  setEvents = (select) => {
     const mapParametersSelect = document.querySelector(`.${classNames.mapSelect}`);
     mapParametersSelect.addEventListener('change', (e) => {
       this.index = e.target.value;
+      select(this.index);
     });
   }
 
