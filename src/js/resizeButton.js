@@ -16,9 +16,18 @@ export default class ResizeButton {
   }
 
   setEvent = () => {
+    const containers = ['map', 'table', 'list', 'chart'];
+    const containersArr = containers.map((name) => document.querySelector(`.${name}`));
+
     this.button.addEventListener('click', (e) => {
       e.currentTarget.classList.toggle(classNames.reduceButton);
       this.container.classList.toggle(classNames.expand);
+
+      containersArr.forEach((container) => {
+        if (container !== this.container) {
+          container.classList.toggle('hide');
+        }
+      });
 
       const event = new Event('resize');
       window.dispatchEvent(event);

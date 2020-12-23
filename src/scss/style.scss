@@ -156,7 +156,7 @@ h1 {
 
   &__select {
     margin-bottom: 20px;
-    width: 100%;
+    width: 120px;
     color: #fff;
     background: #3f3f3fe3;
     border-radius: 3px;
@@ -191,10 +191,19 @@ h1 {
   @include component();
   width: 100%;
   position: relative;
+  box-sizing: border-box;
 
   & .options {
     display: flex;
     justify-content: space-around;
+  }
+
+  &__select {
+    margin-bottom: 20px;
+    width: 120px;
+    color: #fff;
+    background: #3f3f3fe3;
+    border-radius: 3px;
   }
 }
 
@@ -360,6 +369,7 @@ h1 {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 10;
 }
 .textarea {
     margin-bottom: 20px;
@@ -475,6 +485,11 @@ h1 {
     background-color: #ffb900ad;
 }
 
-canvas {
-  min-height: 300px;
+#chart {
+  margin-bottom: 20px;
+  min-height: 200px !important;
+}
+
+.hide {
+  z-index: -1;
 }
