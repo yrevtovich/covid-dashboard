@@ -1,9 +1,4 @@
-const classNames = {
-  resizeButton: 'resize-button',
-  expandButton: 'resize-button_expand',
-  reduceButton: 'resize-button_reduce',
-  expand: 'expand',
-};
+import { classNames } from './constants';
 
 export default class ResizeButton {
   init = (container) => {

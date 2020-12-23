@@ -3,19 +3,9 @@
 
 import Switcher from './switcher';
 import ResizeButton from './resizeButton';
+import { classNames } from './constants';
 import geomap from './geomap';
 // import countries_data from './newGeoJSON';
-
-const classNames = {
-  map: 'map',
-  mapOptions: 'map__options',
-  mapSelect: 'map__select',
-  mapLegend: 'map__legend',
-  legendList: 'legend__list',
-  legendIcon: 'legend__icon',
-  legendDescription: 'legend__description',
-  legendListItem: 'legend__list-item',
-};
 
 export default class Map {
   colors = {
