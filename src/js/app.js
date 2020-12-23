@@ -1,7 +1,8 @@
+/* eslint-disable max-len */
 /* eslint-disable no-console */
 import Service from './service';
 import Map from './map';
-import list from './list';
+import List from './list';
 import { Keyboard } from './keyboard'; // ----???
 import Table from './table';
 
@@ -14,10 +15,14 @@ export default class App {
 
   table = new Table()
 
+  list = new List()
+
   options = {
     isAllPeriod: true,
     isAbsoluteValues: true,
   }
+
+  selectOption = 'Confirmed'
 
   init = async () => {
     try {
@@ -40,6 +45,7 @@ export default class App {
 
       this.map.init(this.setCountry, this.fullCovidData, this.options, this.setOptions);
       this.table.init(this.setCountry, this.fullCovidData, this.options, this.setOptions);
+      this.list.init(this.setCountry, this.fullCovidData, this.options, this.setOptions, this.selectOption, this.setSelect);
     } catch (e) {
       console.log(e.message);
     }
@@ -47,8 +53,8 @@ export default class App {
 
   update = () => {
     this.table.update(this.choosenCountry, this.options);
-    list(this.fullCovidData);
     this.map.update(this.choosenCountry, this.options);
+    this.list.update(this.choosenCountry, this.options, this.selectOption);
   }
 
   setCountry = (name) => {
@@ -61,6 +67,11 @@ export default class App {
 
   setOptions = (options) => {
     this.options = options;
+    this.update();
+  }
+
+  setSelect = (selectOption) => {
+    this.selectOption = selectOption;
     this.update();
   }
 }
