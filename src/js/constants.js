@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/prefer-default-export
 export const classNames = {
-  tableContainer: document.querySelector('.table'),
+  table: 'table',
+  tableOptions: 'table__options',
   listContainer: document.querySelector('.list'),
   listControl: document.querySelector('.list-control'),
   listParamsSelect: document.querySelector('#list-params-select'),
