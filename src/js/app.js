@@ -33,8 +33,6 @@ export default class App {
         console.log('error', e);
       });
 
-    // this.map.init(this.setCountry, this.fullCovidData, this.options, this.setOptions);
-
     // try {
     //   const data = await Promise.all([
     //     this.service.getCOVIDData(), this.service.getPopulationAndFlag(),
@@ -56,7 +54,7 @@ export default class App {
   }
 
   update = () => {
-    this.map.update(this.country, this.options);
+    this.map.update(this.choosenCountry, this.options);
   }
 
   setCountry = (name) => {
@@ -64,6 +62,7 @@ export default class App {
       this.choosenCountry = '';
     }
     this.choosenCountry = name;
+    this.update();
   }
 
   setOptions = (options) => {
