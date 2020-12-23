@@ -33,10 +33,10 @@ export default class CovidChart {
     },
     options: {
       responsive: true,
-      // maintainAspectRatio: false,
+      maintainAspectRatio: false,
       title: {
         display: true,
-        // text: 'Comparison of results',
+        text: '',
       },
       legend: {
         display: false,
@@ -99,32 +99,37 @@ export default class CovidChart {
 
   setConfig = async () => {
     let configData;
+    try {
+      if (!this.country) {
+        this.comulativeData = await this.service.getDailyGlobalCOVIDData();
+        this.comulativeData = this.comulativeData.data.reverse();
+        configData = this.setGlobalDataConfig();
+      } else {
+        this.countryData = await this.service.getDailyCountryCOVIDData(this.country);
+        configData = this.setCountryDataConfig();
 
-    if (!this.country) {
-      this.comulativeData = await this.service.getDailyGlobalCOVIDData();
-      this.comulativeData = this.comulativeData.data.reverse();
-      configData = this.setGlobalDataConfig();
-    } else {
-      this.countryData = await this.service.getDailyCountryCOVIDData(this.country);
-      configData = this.setCountryDataConfig();
+        const { config, date } = configData;
+
+        this.clearCharts();
+        this.chart.options.title.text = this.country || 'Global';
+        this.chart.data.labels.push(...date);
+        this.chart.data.datasets.push(config);
+      }
+    } catch (e) {
+      this.clearCharts();
+      this.chart.options.title.text = 'Not found';
     }
 
-    const { config, date } = configData;
-
-    this.clearCharts();
-    this.chart.data.labels.push(...date);
-    this.chart.data.datasets.push(config);
     this.chart.update();
   }
 
   setGlobalDataConfig = () => {
     const { isAbsoluteValues, isAllPeriod } = this.options;
-
     const { global } = this.parametersConfig;
 
     const key = this.index.toLowerCase();
 
-    const configData = this.comulativeData.reduce((acc, item, index) => {
+    const configData = this.comulativeData.reduce((acc, item) => {
       if (!acc[key]) {
         acc[key] = [];
       }

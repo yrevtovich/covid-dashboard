@@ -493,3 +493,26 @@ h1 {
 .hide {
   z-index: -1;
 }
+
+.chart.expand {
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 16px;
+
+  & .chart__wrapper {
+    min-width: 80%;
+  }
+
+  & .chart__select {
+    width: 80%;
+    max-width: 150px;
+  }
+
+  & .chart__options {
+    width: 80%;
+    max-width: 300px;
+  }
+}

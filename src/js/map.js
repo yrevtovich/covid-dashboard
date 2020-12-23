@@ -61,7 +61,13 @@ export default class Map {
   }
 
   drawMap = (setCountry) => {
-    const { updateContriesStyles, showTooltip, addColorToLocation, covidData } = this;
+    const {
+      updateContriesStyles,
+      showTooltip,
+      addColorToLocation,
+      covidData,
+    } = this;
+
     this.map = new L.map(classNames.map, this.mapOptions);
 
     const geoJSONStyle = {
