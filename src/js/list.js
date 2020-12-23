@@ -26,7 +26,13 @@ export default class List {
     this.selectedOption = selectedOption;
 
     this.listSelect = document.querySelector(`.${classNames.listSelect}`);
-    this.drawList(setCountry, covidData, this.selectedOption, setSelect, options);
+    this.drawList(
+      setCountry,
+      covidData,
+      this.selectedOption,
+      setSelect,
+      options,
+    );
   }
 
   drawList = (setCountry, covidData, selectedOption, setSelect, options) => {
@@ -90,7 +96,8 @@ export default class List {
 
           const listCountryValue = document.createElement('div');
           listCountryValue.textContent = Math.round(
-            (element[`Total${selectedOption}`] / element.population) * 100000,
+            (element[`Total${selectedOption}`] / element.population)
+                * 10000000,
           ) / 100;
           listCountryValue.classList.add('list-country-value');
 
@@ -149,7 +156,7 @@ export default class List {
 
         const listCountryValue = document.createElement('div');
         listCountryValue.textContent = Math.round(
-          (element[`New${selectedOption}`] / element.population) * 100000,
+          (element[`New${selectedOption}`] / element.population) * 10000000,
         ) / 100;
         listCountryValue.classList.add('list-country-value');
 
@@ -168,9 +175,7 @@ export default class List {
     document
       .querySelector(`.${classNames.listSearchInput}`)
       .addEventListener('select', (e) => {
-        document.querySelector(
-          `.${classNames.listResults}`,
-        ).innerHTML = '';
+        document.querySelector(`.${classNames.listResults}`).innerHTML = '';
         if (e.target.value.length === 0) {
           if (options.isAllPeriod) {
             if (options.isAbsoluteValues) {
@@ -222,7 +227,7 @@ export default class List {
                 const listCountryValue = document.createElement('div');
                 listCountryValue.textContent = Math.round(
                   (element[`Total${selectedOption}`] / element.population)
-                      * 100000,
+                      * 10000000,
                 ) / 100;
                 listCountryValue.classList.add('list-country-value');
 
@@ -290,7 +295,7 @@ export default class List {
               const listCountryValue = document.createElement('div');
               listCountryValue.textContent = Math.round(
                 (element[`New${selectedOption}`] / element.population)
-                    * 100000,
+                    * 10000000,
               ) / 100;
               listCountryValue.classList.add('list-country-value');
 
@@ -339,7 +344,13 @@ export default class List {
       });
   };
 
-  renderSearchValues = (sortedCovidData, selectedOption, inputValue, setCountry, options) => {
+  renderSearchValues = (
+    sortedCovidData,
+    selectedOption,
+    inputValue,
+    setCountry,
+    options,
+  ) => {
     const result = sortedCovidData
       .map((el) => {
         el.Country = el.Country.toLowerCase();
@@ -393,7 +404,8 @@ export default class List {
 
           const foundCountryValue = document.createElement('div');
           foundCountryValue.textContent = Math.round(
-            (element[`Total${selectedOption}`] / element.population) * 100000,
+            (element[`Total${selectedOption}`] / element.population)
+                * 10000000,
           ) / 100;
           foundCountryValue.classList.add('found-country-value');
 
@@ -456,7 +468,7 @@ export default class List {
 
         const foundCountryValue = document.createElement('div');
         foundCountryValue.textContent = Math.round(
-          (element[`New${selectedOption}`] / element.population) * 100000,
+          (element[`New${selectedOption}`] / element.population) * 10000000,
         ) / 100;
         foundCountryValue.classList.add('found-country-value');
 
@@ -477,7 +489,9 @@ export default class List {
 
   drawOneCountry = (selectedCountry, options, selectedOption) => {
     document.querySelector(`.${classNames.listResults}`).innerHTML = '';
-    const oneCountryData = this.covidData.find((el) => el.Country === selectedCountry);
+    const oneCountryData = this.covidData.find(
+      (el) => el.Country === selectedCountry,
+    );
     if (options.isAllPeriod) {
       if (options.isAbsoluteValues) {
         // allperiod absolute
@@ -515,7 +529,9 @@ export default class List {
 
         const listCountryValue = document.createElement('div');
         listCountryValue.textContent = Math.round(
-          (oneCountryData[`Total${selectedOption}`] / oneCountryData.population) * 100000,
+          (oneCountryData[`Total${selectedOption}`]
+              / oneCountryData.population)
+              * 10000000,
         ) / 100;
         listCountryValue.classList.add('list-country-value');
 
@@ -560,9 +576,8 @@ export default class List {
 
       const listCountryValue = document.createElement('div');
       listCountryValue.textContent = Math.round(
-        (oneCountryData[`New${selectedOption}`]
-            / oneCountryData.population)
-            * 100000,
+        (oneCountryData[`New${selectedOption}`] / oneCountryData.population)
+            * 10000000,
       ) / 100;
       listCountryValue.classList.add('list-country-value');
 
@@ -577,7 +592,13 @@ export default class List {
     if (country) {
       this.drawOneCountry(country, options, selectedOption);
     } else {
-      this.drawList(this.setCountry, this.covidData, selectedOption, this.setSelect, options);
+      this.drawList(
+        this.setCountry,
+        this.covidData,
+        selectedOption,
+        this.setSelect,
+        options,
+      );
     }
   };
 }

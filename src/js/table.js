@@ -25,7 +25,7 @@ export default class Table {
   };
 
   drawTable = (setCountry, options) => {
-    if (document.querySelector('table') !== null)document.querySelector('table').remove();
+    if (document.querySelector('table') !== null) document.querySelector('table').remove();
     this.table = document.createElement('table');
     document.querySelector(`.${classNames.table}`).append(this.table);
 
@@ -90,21 +90,20 @@ export default class Table {
 
           const tdCases = document.createElement('td');
           tdCases.textContent = Math.round(
-            (country.TotalConfirmed / country.population) * 100000,
+            (country.TotalConfirmed / country.population) * 10000000,
           ) / 100;
           tdCases.classList.add(classNames.tdCases);
           tr.append(tdCases);
 
           const tdDeaths = document.createElement('td');
-          tdDeaths.textContent = Math.round(
-            (country.TotalDeaths / country.population) * 100000,
-          ) / 100;
+          tdDeaths.textContent = Math.round((country.TotalDeaths / country.population) * 10000000)
+            / 100;
           tdDeaths.classList.add(classNames.tdDeaths);
           tr.append(tdDeaths);
 
           const tdRecovered = document.createElement('td');
           tdRecovered.textContent = Math.round(
-            (country.TotalRecovered / country.population) * 100000,
+            (country.TotalRecovered / country.population) * 10000000,
           ) / 100;
           tdRecovered.classList.add(classNames.tdRecovered);
           tr.append(tdRecovered);
@@ -177,20 +176,20 @@ export default class Table {
         tr.append(tdCountry);
 
         const tdCases = document.createElement('td');
-        tdCases.textContent = Math.round(
-          (country.NewConfirmed / country.population) * 100000,
-        )
+        tdCases.textContent = Math.round((country.NewConfirmed / country.population) * 10000000)
           / 100;
         tdCases.classList.add(classNames.tdCases);
         tr.append(tdCases);
 
         const tdDeaths = document.createElement('td');
-        tdDeaths.textContent = Math.round((country.NewDeaths / country.population) * 100000) / 100;
+        tdDeaths.textContent = Math.round(
+          (country.NewDeaths / country.population) * 10000000,
+        ) / 100;
         tdDeaths.classList.add(classNames.tdDeaths);
         tr.append(tdDeaths);
 
         const tdRecovered = document.createElement('td');
-        tdRecovered.textContent = Math.round((country.NewRecovered / country.population) * 100000)
+        tdRecovered.textContent = Math.round((country.NewRecovered / country.population) * 10000000)
           / 100;
         tdRecovered.classList.add(classNames.tdRecovered);
         tr.append(tdRecovered);
@@ -239,20 +238,23 @@ export default class Table {
         countryElement.textContent = `${oneCountryData.Country}`;
 
         const deathsElement = document.createElement('div');
-        deathsElement.textContent = `Deaths: ${Math.round(
-          (oneCountryData.TotalDeaths / oneCountryData.population) * 100000,
-        ) / 100}`;
+        deathsElement.textContent = `Deaths: ${
+          Math.round(
+            (oneCountryData.TotalDeaths / oneCountryData.population) * 10000000,
+          ) / 100
+        }`;
 
         const casesElement = document.createElement('div');
         casesElement.textContent = `Cases: ${
           Math.round(
-            (oneCountryData.TotalConfirmed / oneCountryData.population) * 100000,
+            (oneCountryData.TotalConfirmed / oneCountryData.population)
+              * 10000000,
           ) / 100
         }`;
         const recoveredElement = document.createElement('div');
         recoveredElement.TotalRecovered = `Recovered: ${
           Math.round(
-            (oneCountryData.TotalDeaths / oneCountryData.population) * 100000,
+            (oneCountryData.TotalDeaths / oneCountryData.population) * 10000000,
           ) / 100
         }`;
         this.table.append(
@@ -288,21 +290,23 @@ export default class Table {
       countryElement.textContent = `${oneCountryData.Country}`;
 
       const deathsElement = document.createElement('div');
-      deathsElement.textContent = `Deaths: ${Math.round(
-        (oneCountryData.NewDeaths / oneCountryData.population) * 100000,
-      ) / 100}`;
+      deathsElement.textContent = `Deaths: ${
+        Math.round(
+          (oneCountryData.NewDeaths / oneCountryData.population) * 10000000,
+        ) / 100
+      }`;
 
       const casesElement = document.createElement('div');
       casesElement.textContent = `Cases: ${
         Math.round(
-          (oneCountryData.NewConfirmed / oneCountryData.population) * 100000,
+          (oneCountryData.NewConfirmed / oneCountryData.population) * 10000000,
         ) / 100
       }`;
 
       const recoveredElement = document.createElement('div');
       recoveredElement.textContent = `Recovered: ${
         Math.round(
-          (oneCountryData.NewRecovered / oneCountryData.population) * 100000,
+          (oneCountryData.NewRecovered / oneCountryData.population) * 10000000,
         ) / 100
       }`;
       this.table.append(
@@ -312,7 +316,7 @@ export default class Table {
         recoveredElement,
       );
     }
-  }
+  };
 
   update = (country = this.country, options) => {
     if (country) {
@@ -320,5 +324,5 @@ export default class Table {
     } else {
       this.drawTable(this.setCountry, options);
     }
-  }
+  };
 }
