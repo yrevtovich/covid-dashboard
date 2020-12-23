@@ -57,7 +57,7 @@ export default class CovidChart {
     },
   }
 
-  init = (options, setOptions, country, covidData, population, select) => {
+  init = (options, setOptions, covidData, population, select, country = '') => {
     this.populationData = population;
     this.fullCovidData = covidData;
     this.options = options;
@@ -74,13 +74,13 @@ export default class CovidChart {
     this.resizeButton.init(this.container);
 
     Chart.defaults.global.elements.point.radius = 2;
-    Chart.defaults.global.elements.point.pointStyle = 'line';
 
     const ctx = this.canvas.getContext('2d');
     this.chart = new Chart(ctx, this.chartConfig);
 
     this.setEvents(select);
     this.setConfig();
+    this.chart.update();
   }
 
   setChartConfig = (configData, key, parameters) => {
