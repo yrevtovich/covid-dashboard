@@ -207,9 +207,22 @@ export default class Table {
 
   drawOneCountry = (choosenCountry, options) => {
     this.table.innerHTML = '';
-    const oneCountryData = this.covidData.filter(
-      (element) => element.Country === choosenCountry,
+    let oneCountryData = this.covidData.filter(
+      (element) => element.Country.toLowerCase() === choosenCountry.toLowerCase(),
     )[0];
+    if (oneCountryData === undefined) {
+      oneCountryData = {};
+      oneCountryData.Country = choosenCountry;
+      oneCountryData.TotalDeaths = 'Data not found';
+      oneCountryData.TotalConfirmed = 'Data not found';
+      oneCountryData.TotalRecovered = 'Data not found';
+      oneCountryData.confirmedTotalPer100k = 'Data not found';
+      oneCountryData.confirmedOneDayPer100k = 'Data not found';
+      oneCountryData.deathsTotalPer100k = 'Data not found';
+      oneCountryData.deathsOneDayPer100k = 'Data not found';
+      oneCountryData.recoveredTotalPer100k = 'Data not found';
+      oneCountryData.recoveredOneDayPer100k = 'Data not found';
+    }
 
     if (options.isAllPeriod) {
       if (options.isAbsoluteValues) {
