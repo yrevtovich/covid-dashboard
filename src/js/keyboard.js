@@ -570,6 +570,9 @@ function mouseDownEvents(event) {
       break;
   }
 
+  const inputEvent = new Event('input');
+  keyboard.textField.dispatchEvent(inputEvent);
+
   keyboard.textField.focus();
 }
 
@@ -616,6 +619,10 @@ function setKeyboardListeners() {
 
   keyboardWraper.addEventListener('mouseup', () => {
     keyboard.movementOffset = false;
+  });
+
+  keyboard.board.addEventListener('keydown', (e) => {
+    e.preventDefault();
   });
 }
 

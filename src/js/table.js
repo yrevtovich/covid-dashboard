@@ -5,7 +5,8 @@ import ResizeButton from './resizeButton';
 export default class Table {
   containers = {
     options: document.querySelector(`.${classNames.tableOptions}`),
-    table: document.querySelector(`.${classNames.table}`),
+    table: document.querySelector(`.${classNames.tableSpreadshit}`),
+    tableWrapper: document.querySelector(`.${classNames.table}`),
   };
 
   init = (setCountry, covidData, options, setOptions) => {
@@ -16,7 +17,7 @@ export default class Table {
     this.switcher.init(containers.options, setOptions, options);
 
     this.resizeButton = new ResizeButton();
-    this.resizeButton.init(containers.table);
+    this.resizeButton.init(containers.tableWrapper);
 
     this.covidData = covidData;
     this.options = options;
@@ -27,7 +28,7 @@ export default class Table {
   drawTable = (setCountry, options) => {
     if (document.querySelector('table') !== null) document.querySelector('table').remove();
     this.table = document.createElement('table');
-    document.querySelector(`.${classNames.table}`).append(this.table);
+    document.querySelector(`.${classNames.tableSpreadshit}`).append(this.table);
 
     if (options.isAllPeriod) {
       if (options.isAbsoluteValues) {
@@ -152,7 +153,7 @@ export default class Table {
         tbody.append(tr);
       });
       this.table.append(thead, tbody);
-      document.querySelector(`.${classNames.table}`).append(this.table);
+      document.querySelector(`.${classNames.tableSpreadshit}`).append(this.table);
 
       tbody.addEventListener('click', (e) => {
         setCountry(e.target.parentElement.firstChild.innerText);
@@ -197,7 +198,7 @@ export default class Table {
         tbody.append(tr);
       });
       this.table.append(thead, tbody);
-      document.querySelector(`.${classNames.table}`).append(this.table);
+      document.querySelector(`.${classNames.tableSpreadshit}`).append(this.table);
 
       tbody.addEventListener('click', (e) => {
         setCountry(e.target.parentElement.firstChild.innerText);
@@ -239,6 +240,11 @@ export default class Table {
         const recoveredElement = document.createElement('div');
         recoveredElement.textContent = `Recovered: ${oneCountryData.TotalRecovered}`;
 
+        countryElement.classList.add(classNames.tableCountry);
+        deathsElement.classList.add(classNames.tableDeaths);
+        casesElement.classList.add(classNames.tableCases);
+        recoveredElement.classList.add(classNames.tableRecovered);
+
         this.table.append(
           countryElement,
           deathsElement,
@@ -270,6 +276,12 @@ export default class Table {
             (oneCountryData.TotalDeaths / oneCountryData.population) * 10000000,
           ) / 100
         }`;
+
+        countryElement.classList.add(classNames.tableCountry);
+        deathsElement.classList.add(classNames.tableDeaths);
+        casesElement.classList.add(classNames.tableCases);
+        recoveredElement.classList.add(classNames.tableRecovered);
+
         this.table.append(
           countryElement,
           deathsElement,
@@ -290,6 +302,11 @@ export default class Table {
 
       const recoveredElement = document.createElement('div');
       recoveredElement.textContent = `Recovered: ${oneCountryData.NewRecovered}`;
+
+      countryElement.classList.add(classNames.tableCountry);
+      deathsElement.classList.add(classNames.tableDeaths);
+      casesElement.classList.add(classNames.tableCases);
+      recoveredElement.classList.add(classNames.tableRecovered);
 
       this.table.append(
         countryElement,
@@ -322,6 +339,12 @@ export default class Table {
           (oneCountryData.NewRecovered / oneCountryData.population) * 10000000,
         ) / 100
       }`;
+
+      countryElement.classList.add(classNames.tableCountry);
+      deathsElement.classList.add(classNames.tableDeaths);
+      casesElement.classList.add(classNames.tableCases);
+      recoveredElement.classList.add(classNames.tableRecovered);
+
       this.table.append(
         countryElement,
         deathsElement,

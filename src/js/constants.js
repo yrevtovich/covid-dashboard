@@ -42,4 +42,9 @@ export const classNames = {
   expand: 'expand',
   chart: 'chart',
   chartSelect: 'chart__select',
+  tableCountry: 'table__country',
+  tableDeaths: 'table__deaths',
+  tableCases: 'table__cases',
+  tableRecovered: 'table__recovered',
+  tableSpreadshit: 'table__spreadshit',
 };

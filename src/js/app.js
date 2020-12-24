@@ -44,6 +44,10 @@ export default class App {
         )[0],
       ));
 
+      const datasetDate = this.fullCovidData[0].Date;
+      const date = new Date(datasetDate).toLocaleDateString();
+      document.querySelector('.header__date').innerText = date;
+
       this.map.init(
         this.setCountry,
         this.fullCovidData,
