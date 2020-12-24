@@ -1,4 +1,4 @@
-const mapPath = {
+const geomap = {
   type: 'FeatureCollection',
   features: [{
     type: 'Feature',
@@ -1053,4 +1053,4 @@ const mapPath = {
   }],
 };
 
-export default mapPath;
+export default geomap;
