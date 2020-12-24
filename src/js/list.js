@@ -1,3 +1,6 @@
+/* eslint-disable no-multi-assign */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-return-assign */
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 import { classNames } from './constants';
@@ -26,302 +29,82 @@ export default class List {
     this.selectedOption = selectedOption;
 
     this.listSelect = document.querySelector(`.${classNames.listSelect}`);
+    const copyCovidDataForSortTotalConfirmed = [...covidData];
     this.drawList(
       setCountry,
-      covidData,
-      this.selectedOption,
+      copyCovidDataForSortTotalConfirmed.sort((a, b) => (a.TotalConfirmed < b.TotalConfirmed ? 1 : -1)),
+      'TotalConfirmed',
+      selectedOption,
       setSelect,
-      options,
     );
   }
 
-  drawList = (setCountry, covidData, selectedOption, setSelect, options) => {
+  drawList = (setCountry, sortedCovidData, insertedValue, setSelect) => {
     document.querySelector(`.${classNames.listResults}`).innerHTML = '';
-    const copyCovidDataForSort = [...covidData];
-    switch (selectedOption) {
-      case 'Confirmed':
-        this.sortedCovidData = copyCovidDataForSort.sort((a, b) => (a.TotalConfirmed < b.TotalConfirmed ? 1 : -1));
-        break;
-      case 'Deaths':
-        this.sortedCovidData = copyCovidDataForSort.sort((a, b) => (a.TotalDeaths < b.TotalDeaths ? 1 : -1));
-        break;
-      case 'Recovered':
-        this.sortedCovidData = copyCovidDataForSort.sort((a, b) => (a.NewRecovered < b.NewRecovered ? 1 : -1));
-        break;
-      default:
-        break;
-    }
-    if (options.isAllPeriod) {
-      if (options.isAbsoluteValues) {
-        // allperiod absolute
-        this.sortedCovidData.forEach((element) => {
-          const listCountryWrapper = document.createElement('div');
-          listCountryWrapper.classList.add('list-country-wrapper');
+    sortedCovidData.forEach((element) => {
+      const listCountryWrapper = document.createElement('div');
+      listCountryWrapper.classList.add('list-country-wrapper');
 
-          const listCountry = document.createElement('div');
-          listCountry.textContent = element.Country;
-          listCountry.classList.add('list-country-name');
+      const listCountry = document.createElement('div');
+      listCountry.textContent = element.Country;
+      listCountry.classList.add('list-country-name');
 
-          const listFlag = document.createElement('div');
-          listFlag.classList.add('list-country-flag');
-          listFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
+      const listFlag = document.createElement('div');
+      listFlag.classList.add('list-country-flag');
+      listFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
 
-          const listCountryValue = document.createElement('div');
-          listCountryValue.textContent = element[`Total${selectedOption}`];
-          listCountryValue.classList.add('list-country-value');
+      const listCountryValue = document.createElement('div');
+      listCountryValue.textContent = element[`${insertedValue}`];
+      listCountryValue.classList.add('list-country-value');
 
-          listCountryWrapper.append(listFlag, listCountry, listCountryValue);
-          document
-            .querySelector(`.${classNames.listResults}`)
-            .append(listCountryWrapper);
-        });
-        document
-          .querySelector(`.${classNames.listResults}`)
-          .addEventListener('click', (e) => {
-            setCountry(e.target.parentElement.childNodes[1].innerText);
-          });
-      } else {
-        // allperiod 100k
-        this.sortedCovidData.forEach((element) => {
-          const listCountryWrapper = document.createElement('div');
-          listCountryWrapper.classList.add('list-country-wrapper');
-
-          const listCountry = document.createElement('div');
-          listCountry.textContent = element.Country;
-          listCountry.classList.add('list-country-name');
-
-          const listFlag = document.createElement('div');
-          listFlag.classList.add('list-country-flag');
-          listFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
-
-          const listCountryValue = document.createElement('div');
-          listCountryValue.textContent = Math.round(
-            (element[`Total${selectedOption}`] / element.population)
-                * 10000000,
-          ) / 100;
-          listCountryValue.classList.add('list-country-value');
-
-          listCountryWrapper.append(listFlag, listCountry, listCountryValue);
-          document
-            .querySelector(`.${classNames.listResults}`)
-            .append(listCountryWrapper);
-        });
-        document
-          .querySelector(`.${classNames.listResults}`)
-          .addEventListener('click', (e) => {
-            setCountry(e.target.parentElement.childNodes[1].innerText);
-          });
-      }
-    } else if (options.isAbsoluteValues) {
-      // oneday absolut
-      this.sortedCovidData.forEach((element) => {
-        const listCountryWrapper = document.createElement('div');
-        listCountryWrapper.classList.add('list-country-wrapper');
-
-        const listCountry = document.createElement('div');
-        listCountry.textContent = element.Country;
-        listCountry.classList.add('list-country-name');
-
-        const listFlag = document.createElement('div');
-        listFlag.classList.add('list-country-flag');
-        listFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
-
-        const listCountryValue = document.createElement('div');
-        listCountryValue.textContent = element[`New${selectedOption}`];
-        listCountryValue.classList.add('list-country-value');
-
-        listCountryWrapper.append(listFlag, listCountry, listCountryValue);
-        document
-          .querySelector(`.${classNames.listResults}`)
-          .append(listCountryWrapper);
-      });
+      listCountryWrapper.append(listFlag, listCountry, listCountryValue);
       document
         .querySelector(`.${classNames.listResults}`)
-        .addEventListener('click', (e) => {
-          setCountry(e.target.parentElement.childNodes[1].innerText);
-        });
-    } else {
-      // oneday 100k
-      this.sortedCovidData.forEach((element) => {
-        const listCountryWrapper = document.createElement('div');
-        listCountryWrapper.classList.add('list-country-wrapper');
-
-        const listCountry = document.createElement('div');
-        listCountry.textContent = element.Country;
-        listCountry.classList.add('list-country-name');
-
-        const listFlag = document.createElement('div');
-        listFlag.classList.add('list-country-flag');
-        listFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
-
-        const listCountryValue = document.createElement('div');
-        listCountryValue.textContent = Math.round(
-          (element[`New${selectedOption}`] / element.population) * 10000000,
-        ) / 100;
-        listCountryValue.classList.add('list-country-value');
-
-        listCountryWrapper.append(listFlag, listCountry, listCountryValue);
-        document
-          .querySelector(`.${classNames.listResults}`)
-          .append(listCountryWrapper);
+        .append(listCountryWrapper);
+    });
+    document
+      .querySelector(`.${classNames.listResults}`)
+      .addEventListener('click', (e) => {
+        this.setCountry(e.target.parentElement.childNodes[1].innerText);
       });
-      document
-        .querySelector(`.${classNames.listResults}`)
-        .addEventListener('click', (e) => {
-          setCountry(e.target.parentElement.childNodes[1].innerText);
-        });
-    }
-
     document
       .querySelector(`.${classNames.listSearchInput}`)
       .addEventListener('select', (e) => {
         document.querySelector(`.${classNames.listResults}`).innerHTML = '';
         if (e.target.value.length === 0) {
-          if (options.isAllPeriod) {
-            if (options.isAbsoluteValues) {
-              // allperiod absolute
-              this.sortedCovidData.forEach((element) => {
-                const listCountryWrapper = document.createElement('div');
-                listCountryWrapper.classList.add('list-country-wrapper');
+          sortedCovidData.forEach((element) => {
+            const listCountryWrapper = document.createElement('div');
+            listCountryWrapper.classList.add('list-country-wrapper');
 
-                const listCountry = document.createElement('div');
-                listCountry.textContent = element.Country;
-                listCountry.classList.add('list-country-name');
+            const listCountry = document.createElement('div');
+            listCountry.textContent = element.Country;
+            listCountry.classList.add('list-country-name');
 
-                const listFlag = document.createElement('div');
-                listFlag.classList.add('list-country-flag');
-                listFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
+            const listFlag = document.createElement('div');
+            listFlag.classList.add('list-country-flag');
+            listFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
 
-                const listCountryValue = document.createElement('div');
-                listCountryValue.textContent = element[`Total${selectedOption}`];
-                listCountryValue.classList.add('list-country-value');
+            const listCountryValue = document.createElement('div');
+            listCountryValue.textContent = element[`${insertedValue}`];
+            listCountryValue.classList.add('list-country-value');
 
-                listCountryWrapper.append(
-                  listFlag,
-                  listCountry,
-                  listCountryValue,
-                );
-                document
-                  .querySelector(`.${classNames.listResults}`)
-                  .append(listCountryWrapper);
-              });
-              document
-                .querySelector(`.${classNames.listResults}`)
-                .addEventListener('click', (el) => {
-                  setCountry(el.target.parentElement.childNodes[1].innerText);
-                });
-            } else {
-              // allperiod 100k
-              this.sortedCovidData.forEach((element) => {
-                const listCountryWrapper = document.createElement('div');
-                listCountryWrapper.classList.add('list-country-wrapper');
-
-                const listCountry = document.createElement('div');
-                listCountry.textContent = element.Country;
-                listCountry.classList.add('list-country-name');
-
-                const listFlag = document.createElement('div');
-                listFlag.classList.add('list-country-flag');
-                listFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
-
-                const listCountryValue = document.createElement('div');
-                listCountryValue.textContent = Math.round(
-                  (element[`Total${selectedOption}`] / element.population)
-                      * 10000000,
-                ) / 100;
-                listCountryValue.classList.add('list-country-value');
-
-                listCountryWrapper.append(
-                  listFlag,
-                  listCountry,
-                  listCountryValue,
-                );
-                document
-                  .querySelector(`.${classNames.listResults}`)
-                  .append(listCountryWrapper);
-              });
-              document
-                .querySelector(`.${classNames.listResults}`)
-                .addEventListener('click', (el) => {
-                  setCountry(el.target.parentElement.childNodes[1].innerText);
-                });
-            }
-          } else if (options.isAbsoluteValues) {
-            // oneday absolut
-            this.sortedCovidData.forEach((element) => {
-              const listCountryWrapper = document.createElement('div');
-              listCountryWrapper.classList.add('list-country-wrapper');
-
-              const listCountry = document.createElement('div');
-              listCountry.textContent = element.Country;
-              listCountry.classList.add('list-country-name');
-
-              const listFlag = document.createElement('div');
-              listFlag.classList.add('list-country-flag');
-              listFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
-
-              const listCountryValue = document.createElement('div');
-              listCountryValue.textContent = element[`New${selectedOption}`];
-              listCountryValue.classList.add('list-country-value');
-
-              listCountryWrapper.append(
-                listFlag,
-                listCountry,
-                listCountryValue,
-              );
-              document
-                .querySelector(`.${classNames.listResults}`)
-                .append(listCountryWrapper);
-            });
+            listCountryWrapper.append(listFlag, listCountry, listCountryValue);
             document
               .querySelector(`.${classNames.listResults}`)
-              .addEventListener('click', (el) => {
-                setCountry(el.target.parentElement.childNodes[1].innerText);
-              });
-          } else {
-            // oneday 100k
-            this.sortedCovidData.forEach((element) => {
-              const listCountryWrapper = document.createElement('div');
-              listCountryWrapper.classList.add('list-country-wrapper');
-
-              const listCountry = document.createElement('div');
-              listCountry.textContent = element.Country;
-              listCountry.classList.add('list-country-name');
-
-              const listFlag = document.createElement('div');
-              listFlag.classList.add('list-country-flag');
-              listFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
-
-              const listCountryValue = document.createElement('div');
-              listCountryValue.textContent = Math.round(
-                (element[`New${selectedOption}`] / element.population)
-                    * 10000000,
-              ) / 100;
-              listCountryValue.classList.add('list-country-value');
-
-              listCountryWrapper.append(
-                listFlag,
-                listCountry,
-                listCountryValue,
-              );
-              document
-                .querySelector(`.${classNames.listResults}`)
-                .append(listCountryWrapper);
+              .append(listCountryWrapper);
+          });
+          document
+            .querySelector(`.${classNames.listResults}`)
+            .addEventListener('click', (el) => {
+              this.setCountry(el.target.parentElement.childNodes[1].innerText);
             });
-            document
-              .querySelector(`.${classNames.listResults}`)
-              .addEventListener('click', (el) => {
-                setCountry(el.target.parentElement.childNodes[1].innerText);
-              });
-          }
         } else if (e.target.value.length >= 1) {
           document.querySelector(`.${classNames.listResults}`).innerHTML = '';
           this.renderSearchValues(
-            this.sortedCovidData,
-            selectedOption,
+            sortedCovidData,
+            insertedValue,
             e.target.value,
             setCountry,
-            options,
           );
         }
       });
@@ -346,10 +129,9 @@ export default class List {
 
   renderSearchValues = (
     sortedCovidData,
-    selectedOption,
+    insertedValue,
     inputValue,
     setCountry,
-    options,
   ) => {
     const result = sortedCovidData
       .map((el) => {
@@ -357,248 +139,317 @@ export default class List {
         return el;
       })
       .filter((element) => element.Country.includes(inputValue));
-    if (options.isAllPeriod) {
-      if (options.isAbsoluteValues) {
-        // allperiod absolute
-        result.forEach((element) => {
-          const foundCountryWrapper = document.createElement('div');
-          foundCountryWrapper.classList.add('found-country-wrapper');
+    result.forEach((element) => {
+      const foundCountryWrapper = document.createElement('div');
+      foundCountryWrapper.classList.add('found-country-wrapper');
 
-          const foundCountryName = document.createElement('div');
-          foundCountryName.textContent = element.Country;
-          foundCountryName.classList.add('found-country-name');
+      const foundCountryName = document.createElement('div');
+      foundCountryName.textContent = element.Country;
+      foundCountryName.classList.add('found-country-name');
 
-          const foundCountryFlag = document.createElement('div');
-          foundCountryFlag.classList.add('found-country-flag');
-          foundCountryFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
+      const foundCountryFlag = document.createElement('div');
+      foundCountryFlag.classList.add('found-country-flag');
+      foundCountryFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
 
-          const foundCountryValue = document.createElement('div');
-          foundCountryValue.textContent = element[`Total${selectedOption}`];
-          foundCountryValue.classList.add('found-country-value');
+      const foundCountryValue = document.createElement('div');
+      foundCountryValue.textContent = element[`${insertedValue}`];
+      foundCountryValue.classList.add('found-country-value');
 
-          foundCountryWrapper.append(
-            foundCountryFlag,
-            foundCountryName,
-            foundCountryValue,
-          );
-          document
-            .querySelector(`.${classNames.listResults}`)
-            .append(foundCountryWrapper);
-          foundCountryWrapper.addEventListener('click', (e) => {
-            setCountry(e.target.parentElement.childNodes[1].innerText);
-          });
-        });
-      } else {
-        // allperiod 100k
-        result.forEach((element) => {
-          const foundCountryWrapper = document.createElement('div');
-          foundCountryWrapper.classList.add('found-country-wrapper');
-
-          const foundCountryName = document.createElement('div');
-          foundCountryName.textContent = element.Country;
-          foundCountryName.classList.add('found-country-name');
-
-          const foundCountryFlag = document.createElement('div');
-          foundCountryFlag.classList.add('found-country-flag');
-          foundCountryFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
-
-          const foundCountryValue = document.createElement('div');
-          foundCountryValue.textContent = Math.round(
-            (element[`Total${selectedOption}`] / element.population)
-                * 10000000,
-          ) / 100;
-          foundCountryValue.classList.add('found-country-value');
-
-          foundCountryWrapper.append(
-            foundCountryFlag,
-            foundCountryName,
-            foundCountryValue,
-          );
-          document
-            .querySelector(`.${classNames.listResults}`)
-            .append(foundCountryWrapper);
-          foundCountryWrapper.addEventListener('click', (e) => {
-            setCountry(e.target.parentElement.childNodes[1].innerText);
-          });
-        });
-      }
-    } else if (options.isAbsoluteValues) {
-      // oneday absolut
-      result.forEach((element) => {
-        const foundCountryWrapper = document.createElement('div');
-        foundCountryWrapper.classList.add('found-country-wrapper');
-
-        const foundCountryName = document.createElement('div');
-        foundCountryName.textContent = element.Country;
-        foundCountryName.classList.add('found-country-name');
-
-        const foundCountryFlag = document.createElement('div');
-        foundCountryFlag.classList.add('found-country-flag');
-        foundCountryFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
-
-        const foundCountryValue = document.createElement('div');
-        foundCountryValue.textContent = element[`New${selectedOption}`];
-        foundCountryValue.classList.add('found-country-value');
-
-        foundCountryWrapper.append(
-          foundCountryFlag,
-          foundCountryName,
-          foundCountryValue,
-        );
-        document
-          .querySelector(`.${classNames.listResults}`)
-          .append(foundCountryWrapper);
-        foundCountryWrapper.addEventListener('click', (e) => {
-          setCountry(e.target.parentElement.childNodes[1].innerText);
-        });
+      foundCountryWrapper.append(
+        foundCountryFlag,
+        foundCountryName,
+        foundCountryValue,
+      );
+      document
+        .querySelector(`.${classNames.listResults}`)
+        .append(foundCountryWrapper);
+      foundCountryWrapper.addEventListener('click', (e) => {
+        setCountry(e.target.parentElement.childNodes[1].innerText);
       });
-    } else {
-      // oneday 100k
-      result.forEach((element) => {
-        const foundCountryWrapper = document.createElement('div');
-        foundCountryWrapper.classList.add('found-country-wrapper');
-
-        const foundCountryName = document.createElement('div');
-        foundCountryName.textContent = element.Country;
-        foundCountryName.classList.add('found-country-name');
-
-        const foundCountryFlag = document.createElement('div');
-        foundCountryFlag.classList.add('found-country-flag');
-        foundCountryFlag.style = `background-image: url(https://www.countryflags.io/${element.CountryCode}/flat/64.png)`;
-
-        const foundCountryValue = document.createElement('div');
-        foundCountryValue.textContent = Math.round(
-          (element[`New${selectedOption}`] / element.population) * 10000000,
-        ) / 100;
-        foundCountryValue.classList.add('found-country-value');
-
-        foundCountryWrapper.append(
-          foundCountryFlag,
-          foundCountryName,
-          foundCountryValue,
-        );
-        document
-          .querySelector(`.${classNames.listResults}`)
-          .append(foundCountryWrapper);
-        foundCountryWrapper.addEventListener('click', (e) => {
-          setCountry(e.target.parentElement.childNodes[1].innerText);
-        });
-      });
-    }
+    });
   };
 
-  drawOneCountry = (selectedCountry, options, selectedOption) => {
+  drawOneCountry = (oneCountryData, insertedValue) => {
     document.querySelector(`.${classNames.listResults}`).innerHTML = '';
-    const oneCountryData = this.covidData.find(
-      (el) => el.Country === selectedCountry,
-    );
-    if (options.isAllPeriod) {
-      if (options.isAbsoluteValues) {
-        // allperiod absolute
-        const listCountryWrapper = document.createElement('div');
-        listCountryWrapper.classList.add('list-country-wrapper');
 
-        const listCountry = document.createElement('div');
-        listCountry.textContent = oneCountryData.Country;
-        listCountry.classList.add('list-country-name');
+    const listCountryWrapper = document.createElement('div');
+    listCountryWrapper.classList.add('list-country-wrapper');
 
-        const listFlag = document.createElement('div');
-        listFlag.classList.add('list-country-flag');
-        listFlag.style = `background-image: url(https://www.countryflags.io/${oneCountryData.CountryCode}/flat/64.png)`;
+    const listCountry = document.createElement('div');
+    listCountry.textContent = oneCountryData.Country;
+    listCountry.classList.add('list-country-name');
 
-        const listCountryValue = document.createElement('div');
-        listCountryValue.textContent = oneCountryData[`Total${selectedOption}`];
-        listCountryValue.classList.add('list-country-value');
+    const listFlag = document.createElement('div');
+    listFlag.classList.add('list-country-flag');
+    listFlag.style = `background-image: url(https://www.countryflags.io/${oneCountryData.CountryCode}/flat/64.png)`;
 
-        listCountryWrapper.append(listFlag, listCountry, listCountryValue);
-        document
-          .querySelector(`.${classNames.listResults}`)
-          .append(listCountryWrapper);
-      } else {
-        // allperiod 100k
-        const listCountryWrapper = document.createElement('div');
-        listCountryWrapper.classList.add('list-country-wrapper');
+    const listCountryValue = document.createElement('div');
+    listCountryValue.textContent = oneCountryData[`${insertedValue}`];
+    listCountryValue.classList.add('list-country-value');
 
-        const listCountry = document.createElement('div');
-        listCountry.textContent = oneCountryData.Country;
-        listCountry.classList.add('list-country-name');
-
-        const listFlag = document.createElement('div');
-        listFlag.classList.add('list-country-flag');
-        listFlag.style = `background-image: url(https://www.countryflags.io/${oneCountryData.CountryCode}/flat/64.png)`;
-
-        const listCountryValue = document.createElement('div');
-        listCountryValue.textContent = Math.round(
-          (oneCountryData[`Total${selectedOption}`]
-              / oneCountryData.population)
-              * 10000000,
-        ) / 100;
-        listCountryValue.classList.add('list-country-value');
-
-        listCountryWrapper.append(listFlag, listCountry, listCountryValue);
-        document
-          .querySelector(`.${classNames.listResults}`)
-          .append(listCountryWrapper);
-      }
-    } else if (options.isAbsoluteValues) {
-      // oneday absolut
-      const listCountryWrapper = document.createElement('div');
-      listCountryWrapper.classList.add('list-country-wrapper');
-
-      const listCountry = document.createElement('div');
-      listCountry.textContent = oneCountryData.Country;
-      listCountry.classList.add('list-country-name');
-
-      const listFlag = document.createElement('div');
-      listFlag.classList.add('list-country-flag');
-      listFlag.style = `background-image: url(https://www.countryflags.io/${oneCountryData.CountryCode}/flat/64.png)`;
-
-      const listCountryValue = document.createElement('div');
-      listCountryValue.textContent = oneCountryData[`New${selectedOption}`];
-      listCountryValue.classList.add('list-country-value');
-
-      listCountryWrapper.append(listFlag, listCountry, listCountryValue);
-      document
-        .querySelector(`.${classNames.listResults}`)
-        .append(listCountryWrapper);
-    } else {
-      // oneday 100k
-      const listCountryWrapper = document.createElement('div');
-      listCountryWrapper.classList.add('list-country-wrapper');
-
-      const listCountry = document.createElement('div');
-      listCountry.textContent = oneCountryData.Country;
-      listCountry.classList.add('list-country-name');
-
-      const listFlag = document.createElement('div');
-      listFlag.classList.add('list-country-flag');
-      listFlag.style = `background-image: url(https://www.countryflags.io/${oneCountryData.CountryCode}/flat/64.png)`;
-
-      const listCountryValue = document.createElement('div');
-      listCountryValue.textContent = Math.round(
-        (oneCountryData[`New${selectedOption}`] / oneCountryData.population)
-            * 10000000,
-      ) / 100;
-      listCountryValue.classList.add('list-country-value');
-
-      listCountryWrapper.append(listFlag, listCountry, listCountryValue);
-      document
-        .querySelector(`.${classNames.listResults}`)
-        .append(listCountryWrapper);
-    }
+    listCountryWrapper.append(listFlag, listCountry, listCountryValue);
+    document
+      .querySelector(`.${classNames.listResults}`)
+      .append(listCountryWrapper);
   };
 
   update = (country = this.country, options, selectedOption) => {
+    console.log(country);
+    const copyCovidDataForSort = [...this.covidData];
+    const oneCountryData = this.covidData.find((el) => el.Country === country && el.population !== undefined) || 'Not Found';
     if (country) {
-      this.drawOneCountry(country, options, selectedOption);
+      switch (selectedOption) {
+        case 'Confirmed':
+          if (options.isAllPeriod) {
+            if (options.isAbsoluteValues) {
+              // allperiod absolute
+              this.drawOneCountry(oneCountryData, 'TotalConfirmed');
+            } else {
+              // allperiod 100k
+              const updateOneCountryData = (oneCountryData.confirmedTotalPer100k = Math.round(
+                (oneCountryData.TotalConfirmed / oneCountryData.population)
+                    * 10000000,
+              ) / 100);
+              this.drawOneCountry(
+                updateOneCountryData,
+                'confirmedTotalPer100k',
+              );
+            }
+          } else if (options.isAbsoluteValues) {
+            // oneday absolut
+            this.drawOneCountry(oneCountryData, 'NewConfirmed');
+          } else {
+            // oneday 100k
+            const updateOneCountryData = (oneCountryData.confirmedOneDayPer100k = Math.round(
+              (oneCountryData.TotalConfirmed / oneCountryData.population)
+                  * 10000000,
+            ) / 100);
+            this.drawOneCountry(updateOneCountryData, 'confirmedOneDayPer100k');
+          }
+          break;
+        case 'Deaths':
+          if (options.isAllPeriod) {
+            if (options.isAbsoluteValues) {
+              // allperiod absolute
+              this.drawOneCountry(oneCountryData, 'TotalDeaths');
+            } else {
+              // allperiod 100k
+              const updateOneCountryData = (oneCountryData.deathsTotalPer100k = Math.round(
+                (oneCountryData.TotalConfirmed / oneCountryData.population)
+                    * 10000000,
+              ) / 100);
+              this.drawOneCountry(
+                updateOneCountryData,
+                'deathsTotalPer100k',
+              );
+            }
+          } else if (options.isAbsoluteValues) {
+            // oneday absolut
+            this.drawOneCountry(oneCountryData, 'NewDeaths');
+          } else {
+            // oneday 100k
+            const updateOneCountryData = (oneCountryData.deathsOneDayPer100k = Math.round(
+              (oneCountryData.TotalConfirmed / oneCountryData.population)
+                  * 10000000,
+            ) / 100);
+            this.drawOneCountry(updateOneCountryData, 'deathsOneDayPer100k');
+          }
+          break;
+        case 'Recovered':
+          if (options.isAllPeriod) {
+            if (options.isAbsoluteValues) {
+              // allperiod absolute
+              this.drawOneCountry(country, 'TotalRecovered');
+            } else {
+              // allperiod 100k
+              const updateOneCountryData = (oneCountryData.recoveredTotalPer100k = Math.round(
+                (oneCountryData.TotalConfirmed / oneCountryData.population)
+                    * 10000000,
+              ) / 100);
+              this.drawOneCountry(
+                updateOneCountryData,
+                'recoveredTotalPer100k',
+              );
+            }
+          } else if (options.isAbsoluteValues) {
+            // oneday absolut
+            this.drawOneCountry(oneCountryData, 'NewRecovered');
+          } else {
+            // oneday 100k
+            const updateOneCountryData = (oneCountryData.recoveredOneDayPer100k = Math.round(
+              (oneCountryData.TotalConfirmed / oneCountryData.population)
+                  * 10000000,
+            ) / 100);
+            this.drawOneCountry(updateOneCountryData, 'recoveredOneDayPer100k');
+          }
+          break;
+        default:
+          break;
+      }
     } else {
-      this.drawList(
-        this.setCountry,
-        this.covidData,
-        selectedOption,
-        this.setSelect,
-        options,
-      );
+      switch (selectedOption) {
+        case 'Confirmed':
+          if (options.isAllPeriod) {
+            if (options.isAbsoluteValues) {
+            // allperiod absolute
+              this.drawList(
+                this.setCountry,
+                copyCovidDataForSort.sort((a, b) => (a.TotalConfirmed < b.TotalConfirmed ? 1 : -1)),
+                'TotalConfirmed',
+                selectedOption,
+                this.setSelect,
+              );
+            } else {
+            // allperiod 100k
+              const filtred = copyCovidDataForSort.filter((el) => el.population !== undefined);
+              filtred.map(
+                (element) => (element.confirmedTotalPer100k = Math.round(
+                  (element.TotalConfirmed / element.population) * 10000000,
+                ) / 100),
+              );
+              this.drawList(
+                this.setCountry,
+                (filtred.sort((a, b) => (a.confirmedTotalPer100k < b.confirmedTotalPer100k ? 1 : -1))),
+                'confirmedTotalPer100k',
+                selectedOption,
+                this.setSelect,
+              );
+            }
+          } else if (options.isAbsoluteValues) {
+          // oneday absolut
+            this.drawList(
+              this.setCountry,
+              (copyCovidDataForSort.sort((a, b) => (a.NewConfirmed < b.NewConfirmed ? 1 : -1))),
+              'NewConfirmed',
+              selectedOption,
+              this.setSelect,
+            );
+          } else {
+          // oneday 100k
+            const filtred = copyCovidDataForSort.filter((el) => el.population !== undefined);
+            filtred.map(
+              (element) => (element.confirmedOneDayPer100k = Math.round(
+                (element.NewConfirmed / element.population) * 10000000,
+              ) / 100),
+            );
+            this.drawList(
+              this.setCountry,
+              filtred.sort((a, b) => (a.confirmedOneDayPer100k < b.confirmedOneDayPer100k ? 1 : -1)),
+              'confirmedOneDayPer100k',
+              selectedOption,
+              this.setSelect,
+            );
+          }
+          break;
+        case 'Deaths':
+          if (options.isAllPeriod) {
+            if (options.isAbsoluteValues) {
+              // allperiod absolute
+              this.drawList(
+                this.setCountry,
+                copyCovidDataForSort.sort((a, b) => (a.TotalDeaths < b.TotalDeaths ? 1 : -1)),
+                'TotalDeaths',
+                selectedOption,
+                this.setSelect,
+              );
+            } else {
+              // allperiod 100k
+              const filtred = copyCovidDataForSort.filter((el) => el.population !== undefined);
+              filtred.map(
+                (element) => (element.deathsTotalPer100k = Math.round(
+                  (element.TotalDeaths / element.population) * 10000000,
+                ) / 100),
+              );
+              this.drawList(
+                this.setCountry,
+                (filtred.sort((a, b) => (a.deathsTotalPer100k < b.deathsTotalPer100k ? 1 : -1))),
+                'deathsTotalPer100k',
+                selectedOption,
+                this.setSelect,
+              );
+            }
+          } else if (options.isAbsoluteValues) {
+            // oneday absolut
+            this.drawList(
+              this.setCountry,
+              (copyCovidDataForSort.sort((a, b) => (a.NewDeaths < b.NewDeaths ? 1 : -1))),
+              'NewDeaths',
+              selectedOption,
+              this.setSelect,
+            );
+          } else {
+            // oneday 100k
+            const filtred = copyCovidDataForSort.filter((el) => el.population !== undefined);
+            filtred.map(
+              (element) => (element.deathsOneDayPer100k = Math.round(
+                (element.NewDeaths / element.population) * 10000000,
+              ) / 100),
+            );
+            this.drawList(
+              this.setCountry,
+              (filtred.sort((a, b) => (a.deathsOneDayPer100k < b.deathsOneDayPer100k ? 1 : -1))),
+              'deathsOneDayPer100k',
+              selectedOption,
+              this.setSelect,
+            );
+          }
+          break;
+        case 'Recovered':
+          if (options.isAllPeriod) {
+            if (options.isAbsoluteValues) {
+              // allperiod absolute
+              this.drawList(
+                this.setCountry,
+                copyCovidDataForSort.sort((a, b) => (a.TotalRecovered < b.TotalRecovered ? 1 : -1)),
+                'TotalRecovered',
+                selectedOption,
+                this.setSelect,
+              );
+            } else {
+              // allperiod 100k
+              const filtred = copyCovidDataForSort.filter((el) => el.population !== undefined);
+              filtred.map(
+                (element) => (element.recoveredTotalPer100k = Math.round(
+                  (element.TotalRecovered / element.population) * 10000000,
+                ) / 100),
+              );
+              this.drawList(
+                this.setCountry,
+                (filtred.sort((a, b) => (a.recoveredTotalPer100k < b.recoveredTotalPer100k ? 1 : -1))),
+                'recoveredTotalPer100k',
+                selectedOption,
+                this.setSelect,
+              );
+            }
+          } else if (options.isAbsoluteValues) {
+            // oneday absolut
+            this.drawList(
+              this.setCountry,
+              (copyCovidDataForSort.sort((a, b) => (a.NewRecovered < b.NewRecovered ? 1 : -1))),
+              'NewRecovered',
+              selectedOption,
+              this.setSelect,
+            );
+          } else {
+            // oneday 100k
+            const filtred = copyCovidDataForSort.filter((el) => el.population !== undefined);
+            filtred.map(
+              (element) => (element.recoveredOneDayPer100k = Math.round(
+                (element.NewRecovered / element.population) * 10000000,
+              ) / 100),
+            );
+            this.drawList(
+              this.setCountry,
+              (filtred.sort((a, b) => (a.recoveredOneDayPer100k < b.recoveredOneDayPer100k ? 1 : -1))),
+              'recoveredOneDayPer100k',
+              selectedOption,
+              this.setSelect,
+            );
+          }
+          break;
+        default:
+          break;
+      }
     }
   };
 }
