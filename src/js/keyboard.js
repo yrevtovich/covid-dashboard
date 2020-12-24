@@ -617,6 +617,10 @@ function setKeyboardListeners() {
   keyboardWraper.addEventListener('mouseup', () => {
     keyboard.movementOffset = false;
   });
+
+  keyboard.board.addEventListener('keydown', (e) => {
+    e.preventDefault();
+  })
 }
 
 setKeyboardListeners();

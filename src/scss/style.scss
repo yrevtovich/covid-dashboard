@@ -93,8 +93,9 @@ h1 {
 .list {
   @include wrapper();
   @include component();
-  padding: 10px 5px 10px 10px;
-  width: 22%;
+  padding: 10px 3px 10px 10px;
+  width: 25%;
+  font-size: 12px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -104,7 +105,6 @@ h1 {
     flex-direction: column;
     .list-search {
       display: flex;
-      flex-direction: column;
       .list-search-input {
         margin: 4px 0;
       }
@@ -127,9 +127,13 @@ h1 {
       }
       .list-country-name {
         width: 50%;
+        display: inline-flex;
+        align-self: center;
       }
       .list-country-value {
         width: 30%;
+        display: inline-flex;
+        align-self: center;
       }
     }
     .found-country-wrapper {      
@@ -169,7 +173,7 @@ h1 {
   @include component();
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 45%;
   position: relative;
   overflow: overlay;
 
@@ -181,16 +185,12 @@ h1 {
   &__info {
     padding: 20px 30px 10px;
     width: 100%;
-    background-color: $mainBackgroundColor; /////////////////////////////
+    background-color: $mainBackgroundColor; 
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    // position: absolute;
-    // left: 0;
-    // bottom: 0;
     box-sizing: border-box;
-    // z-index: 1000;
   }
 
   &__options {
@@ -237,6 +237,7 @@ h1 {
 
 .table {
   @include component();
+  @include overflow();
   margin-bottom: 10px;
   width: 100%;
   display: flex;
@@ -245,6 +246,20 @@ h1 {
   .table-control {
     display: flex;
   }
+  
+  .resize-button {
+    right: 20px;
+  }
+
+  .options {
+    display: flex;
+
+    &__value {
+      margin-right: 35px;
+      margin-bottom: 15px;
+    };
+  }
+
   tbody {
     tr:hover {
       cursor: pointer;
@@ -597,8 +612,47 @@ h1 {
   & .chart__options {
     width: 80%;
     max-width: 300px;
+
+    &__value {
+      margin-right: 30px;
+    }
+  }
+
+  canvas {
+    height: 340px !important;
   }
 }
-tbody {
-  @include overflow();
+
+canvas {
+  height: 240px !important;
+}
+
+.button {
+  width: 30px;
+  height: 30px;
+  background-image: url(../assets/images/keyboard.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+
+@media (max-width: 1120px) {
+  .map__options .options {
+    &__type {
+      margin-bottom: 15px;
+    }
+
+    &__variant {
+      margin-bottom: 2px;
+    }
+
+    &__value {
+      margin-right: 10px;
+      margin-bottom: 0;
+    }
+  }
+
+  .map__info {
+    padding: 20px 10px 10px;
+  }
 }
