@@ -10,19 +10,45 @@ import geomap from './geomap';
 export default class Map {
   colors = {
     map: 'grey',
-    hover: '#ffffaa99',
-    choosen: '#00ffff99',
-    legend: ['purple', 'crimson', 'red', 'orange', 'yellow', 'green', 'grey'],
+    hover: '#a4fffe',
+    choosen: '#09bab8',
+    legend: {
+      Confirmed: ['orangered', '#fc6d1d', 'darkorange', '#ffa92e', '#ffe32c', '#fffa86', 'grey'],
+      Deaths: ['darkred', '#c20909', '#f8381c', '#fc6731', '#ff8d4e', '#ffbd6e', 'grey'],
+      Recovered: ['#074907', '#145b14', 'darkgreen', '#057a05', '#259025', '#55ae55', 'grey'],
+    },
   }
 
   legendOptions = {
-    absoluteValues: {
-      total: [10000000, 1000000, 500000, 100000, 1000, 0, 'Not found'],
-      daily: [100000, 20000, 10000, 5000, 1000, 0, 'Not found'],
+    Confirmed: {
+      absoluteValues: {
+        total: [10000000, 1000000, 500000, 100000, 1000, 0, 'Not found'],
+        daily: [100000, 20000, 10000, 5000, 1000, 0, 'Not found'],
+      },
+      relativeValues: {
+        total: [5000, 2500, 1000, 500, 100, 0, 'Not found'],
+        daily: [50, 20, 10, 5, 1, 0, 'Not found'],
+      },
     },
-    relativeValues: {
-      total: [5000, 2500, 1000, 500, 100, 0, 'Not found'],
-      daily: [50, 20, 10, 5, 1, 0, 'Not found'],
+    Recovered: {
+      absoluteValues: {
+        total: [1000000, 500000, 100000, 50000, 10000, 0, 'Not found'],
+        daily: [20000, 10000, 5000, 1000, 500, 0, 'Not found'],
+      },
+      relativeValues: {
+        total: [3000, 1000, 500, 100, 50, 0, 'Not found'],
+        daily: [50, 20, 10, 5, 1, 0, 'Not found'],
+      },
+    },
+    Deaths: {
+      absoluteValues: {
+        total: [300000, 100000, 50000, 10000, 1000, 0, 'Not found'],
+        daily: [1000, 500, 300, 100, 50, 0, 'Not found'],
+      },
+      relativeValues: {
+        total: [100, 50, 30, 10, 5, 0, 'Not found'],
+        daily: [50, 20, 10, 5, 1, 0, 'Not found'],
+      },
     },
   }
 
@@ -104,7 +130,7 @@ export default class Map {
 
     const index = legendScale.findIndex((item) => indicatorValue >= item);
 
-    location.setStyle({ fillColor: this.colors.legend[index] });
+    location.setStyle({ fillColor: this.colors.legend[this.index][index] });
   }
 
   getLegendScale = () => {
@@ -112,7 +138,7 @@ export default class Map {
     const valueIndex = isAbsoluteValues ? 'absoluteValues' : 'relativeValues';
     const periodIndex = isAllPeriod ? 'total' : 'daily';
 
-    return this.legendOptions[valueIndex][periodIndex];
+    return this.legendOptions[this.index][valueIndex][periodIndex];
   }
 
   getIndicatorValue = (countryCode) => {
@@ -189,7 +215,7 @@ export default class Map {
 
       const colorIcon = document.createElement('div');
       colorIcon.classList.add(classNames.legendIcon);
-      colorIcon.style.backgroundColor = this.colors.legend[index];
+      colorIcon.style.backgroundColor = this.colors.legend[this.index][index];
 
       const description = document.createElement('p');
       description.classList.add(classNames.legendDescription);

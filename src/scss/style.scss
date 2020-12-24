@@ -104,9 +104,21 @@ h1 {
     display: flex;
     flex-direction: column;
     .list-search {
+      margin-bottom: 10px;
       display: flex;
       .list-search-input {
-        margin: 4px 0;
+        margin: 3px 5px 3px 0;
+        padding: 0 10px;
+        width: 80%;
+        color: $mainFontColor;
+        background-color: $mainBackgroundColor;
+        border-radius: 10px;
+        border: 1px solid $borderColorButton;
+        max-width: 400px;
+
+        &:focus {
+          border: 1px solid $colorOrange;
+        }
       }
     }
     
@@ -119,6 +131,12 @@ h1 {
 
     .list-country-wrapper {
       display: flex;
+      border-top: 1px solid transparent;
+      border-bottom: 1px solid #d3d3d32e;
+      &:hover {
+        border-top: 1px solid $colorOrange;
+        border-bottom: 1px solid $colorOrange;
+      }
       .list-country-flag {
         width: 40px;
         height: 30px;
@@ -465,16 +483,21 @@ h1 {
 }
 
 .button {
-  width: 100%;
-  margin-bottom: 10px;
+  // width: 100%;
   padding: -1px;
   background: #808080;
-  border-radius: 5px;
+  border-radius: 50%;
   border: 1px solid #c9c7be85;
+  transition: all 0.2s linear;
+
+  &:hover {
+    box-shadow: 0 0 20px $colorOrange;
+  }
 }
 
 .button__active {
   background: #ffd04291;
+  box-shadow: 0 0 10px $colorOrange;
 }
 
 .keyboard__wrapper {
@@ -635,6 +658,40 @@ canvas {
   background-repeat: no-repeat;
 }
 
+.list.expand {
+  font-size: 16px;
+  .list {
+    &-control {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-direction: row-reverse;
+    }
+
+    &-results {
+      margin: auto;
+      width: 450px;
+      font-size: 16px;
+    }
+
+    &-country-value {
+      display: inline-flex;
+      align-self: center;      
+      justify-content: flex-end;
+    }
+  }
+
+  .options {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: row;
+
+    &__value {
+      margin-right: 30px;
+    }
+  }
+}
+
 
 @media (max-width: 1120px) {
   .map__options .options {
@@ -655,4 +712,8 @@ canvas {
   .map__info {
     padding: 20px 10px 10px;
   }
+}
+
+path {
+  transition: all 0.7s linear;
 }

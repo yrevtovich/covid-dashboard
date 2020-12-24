@@ -174,7 +174,7 @@ export default class List {
 
     document
       .querySelector(`.${classNames.listSearchInput}`)
-      .addEventListener('select', (e) => {
+      .addEventListener('input', (e) => {
         document.querySelector(`.${classNames.listResults}`).innerHTML = '';
         if (e.target.value.length === 0) {
           if (options.isAllPeriod) {
