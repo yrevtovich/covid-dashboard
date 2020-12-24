@@ -55,7 +55,6 @@ export default class App {
       this.chart.init(
         this.options,
         this.setOptions,
-        this.choosenCountry,
         this.fullCovidData,
         this.countriesPopulationAndFlags,
         this.setSelect,
@@ -76,6 +75,8 @@ export default class App {
         this.options,
         this.setOptions,
       );
+
+      this.update();
     } catch (e) {
       console.log(e.message);
     }
