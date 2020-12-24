@@ -182,12 +182,6 @@ export default class Map {
       .openTooltip();
   }
 
-  addMarker = () => {
-    const icon = L.divIcon({ className: 'marker' });
-    const marker = new L.Marker([46.82, 8.23], { icon });
-    marker.addTo(this.map);
-  }
-
   update = (country = this.country, options, index) => {
     this.country = country;
     this.options = options;
