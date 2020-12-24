@@ -207,9 +207,16 @@ export default class Table {
 
   drawOneCountry = (choosenCountry, options) => {
     this.table.innerHTML = '';
-    const oneCountryData = this.covidData.filter(
-      (element) => element.Country === choosenCountry,
+    let oneCountryData = this.covidData.filter(
+      (element) => element.Country.toLowerCase() === choosenCountry.toLowerCase(),
     )[0];
+    if (oneCountryData === undefined) {
+      oneCountryData = {};
+      oneCountryData.Country = 'Not found';
+      oneCountryData.TotalDeaths = 'Not found';
+      oneCountryData.TotalConfirmed = 'Not found';
+      oneCountryData.TotalRecovered = 'Not found';
+    }
 
     if (options.isAllPeriod) {
       if (options.isAbsoluteValues) {
