@@ -212,10 +212,16 @@ export default class Table {
     )[0];
     if (oneCountryData === undefined) {
       oneCountryData = {};
-      oneCountryData.Country = 'Not found';
-      oneCountryData.TotalDeaths = 'Not found';
-      oneCountryData.TotalConfirmed = 'Not found';
-      oneCountryData.TotalRecovered = 'Not found';
+      oneCountryData.Country = choosenCountry;
+      oneCountryData.TotalDeaths = 'Data not found';
+      oneCountryData.TotalConfirmed = 'Data not found';
+      oneCountryData.TotalRecovered = 'Data not found';
+      oneCountryData.confirmedTotalPer100k = 'Data not found';
+      oneCountryData.confirmedOneDayPer100k = 'Data not found';
+      oneCountryData.deathsTotalPer100k = 'Data not found';
+      oneCountryData.deathsOneDayPer100k = 'Data not found';
+      oneCountryData.recoveredTotalPer100k = 'Data not found';
+      oneCountryData.recoveredOneDayPer100k = 'Data not found';
     }
 
     if (options.isAllPeriod) {
