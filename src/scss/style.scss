@@ -7,6 +7,31 @@ $colorOrange: #ffa500;
 $borderColorContainer: #8080802b;
 $borderColorButton: #808080;
 $colorButton: #ece9e9;
+$colorSelect: #373737;
+
+@mixin overflow {
+  overflow-y: overlay;    
+
+    &::-webkit-scrollbar {      
+      width: 10px;
+      background-color: #474747fb;
+      border-radius: 10px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: #252525fb;
+      border-radius: 10px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background: #615e5eb9;
+      transition: all 1s linear;
+      &:hover {
+        background-color: #d47100d6;
+      }
+    }
+}
 
 @mixin component {
   // margin: 0 10px;
@@ -16,6 +41,9 @@ $colorButton: #ece9e9;
   border: 1px solid $borderColorContainer;
   border-radius: 5px;
   box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 @mixin wrapper {
@@ -65,9 +93,11 @@ h1 {
 .list {
   @include wrapper();
   @include component();
-  padding-top: 40px;
-  width: 20%;
-  overflow: auto;
+  padding: 10px 5px 10px 10px;
+  width: 22%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   position: relative;
   .list-control {
     display: flex;
@@ -84,6 +114,9 @@ h1 {
   .list-results {
     display: flex;
     flex-direction: column;
+    overflow: overlay;
+    @include overflow();
+
     .list-country-wrapper {
       display: flex;
       .list-country-flag {
@@ -124,9 +157,9 @@ h1 {
   }
   &__select {
       margin-bottom: 20px;
-      width: 100%;
+      width: 120px;
       color: #fff;
-      background: #3f3f3fe3;
+      background: $colorSelect;
       border-radius: 3px;
     }
 }
@@ -146,7 +179,7 @@ h1 {
   }
 
   &__info {
-    padding: 20px;
+    padding: 20px 30px 10px;
     width: 100%;
     background-color: $mainBackgroundColor; /////////////////////////////
     border-radius: 5px;
@@ -160,15 +193,35 @@ h1 {
     // z-index: 1000;
   }
 
-  // &__legend {
-  //   height: 200px;
-  // }
+  &__options {
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    .options {
+      display: flex;
+
+      &__type {
+        margin-bottom: 15px;
+      }
+
+      &__variant {
+        margin-bottom: 2px;
+      }
+
+      &__value {
+        margin-right: 20px;
+        margin-bottom: 0;
+      }
+    }
+  }
 
   &__select {
     margin-bottom: 20px;
     width: 120px;
     color: #fff;
-    background: #3f3f3fe3;
+    background: $colorSelect;
     border-radius: 3px;
   }
 }
@@ -186,7 +239,6 @@ h1 {
   @include component();
   margin-bottom: 10px;
   width: 100%;
-  overflow: auto;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -327,10 +379,14 @@ h1 {
     align-items: center;
   }
 
+  &__description {
+    font-size: 12px;
+  }
+
   &__icon {
     margin-right: 10px;
     width: 20px;
-    height: 20px;
+    height: 15px;
   }
 }
 
@@ -542,4 +598,7 @@ h1 {
     width: 80%;
     max-width: 300px;
   }
+}
+tbody {
+  @include overflow();
 }
