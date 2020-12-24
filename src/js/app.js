@@ -3,14 +3,12 @@
 import Service from './service';
 import Map from './map';
 import List from './list';
-import { Keyboard } from './keyboard'; // ----???
+import './keyboard'; // ----???
 import Table from './table';
 import CovidChart from './chart';
 
 export default class App {
   service = new Service();
-
-  keyboard = new Keyboard();
 
   map = new Map()
 

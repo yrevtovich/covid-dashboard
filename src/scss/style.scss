@@ -407,18 +407,23 @@ h1 {
 }
 
 .keyboard__wrapper {
-  max-width: 1000px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 14px;
+  max-width: 500px;
+  font-size: 12px;
   box-sizing: border-box;
+  position: absolute;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  // transform: translate(-50%, -50%);
 }
 
 .keyboard {
-  padding: 10px 15px;
+  padding: 4px;
   background-color: #707070;
-  border: 3px solid #080808;
+  border: 1px solid #d2d2d26b;
   border-radius: 5px;
   display: none;
+  box-sizing: border-box;
 }
 
 .keyboard__visible {
@@ -426,7 +431,7 @@ h1 {
 }
 
 .keyboard__row {
-  margin: 3px;
+  margin: 2px;
   display: -webkit-box;
   display: flex;
   -webkit-box-pack: justify;
@@ -434,10 +439,10 @@ h1 {
 }
 
 .keyboard__key {
-  margin: 3px;
-  padding: 5px;
-  width: 50px;
-  height: 50px;
+  margin: 1px;
+  padding: 4px;
+  width: 29px;
+  height: 29px;
   color: #ffe8c4;
   background-color: #464646;
   box-sizing: border-box;
@@ -460,34 +465,38 @@ h1 {
 }
 
 .keyboard__space {
-  max-width: 460px;
+  max-width: 400px;
   width: 50%;
 }
 
-.keyboard__enter,
+.keyboard__enter {
+  padding: 0 5px;
+  width: 50px;
+}
+
 .keyboard__capslock {
   padding: 0 5px;
-  width: 90px;
+  width: 65px;
 }
 
 .keyboard__shift {
   padding: 0 5px;
-  width: 101px;
+  width: 65px;
 }
 
 .keyboard__backspace {
-  padding: 0 10px;
+  padding: 0 7px;
   width: fit-content;
 }
 
 .keyboard__tab,
 .keyboard__del {
   padding: 0 5px;
-  width: 70px;
+  width: 30px;
 }
 
 .keyboard__ctrl {
-  width: 60px;
+  width: 40px;
 }
 
 .keyboard__sound,

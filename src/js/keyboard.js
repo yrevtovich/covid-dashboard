@@ -3,7 +3,7 @@ import { classNames } from './constants';
 
 export class Keyboard {
   constructor() {
-    this.rows = [14, 15, 13, 12, 8];
+    this.rows = [14, 15, 13, 12, 6];
     this.layout = {
       eng: [
         [
@@ -75,8 +75,6 @@ export class Keyboard {
           ['Space', 'Space'],
           ['←', '←'],
           ['→', '→'],
-          ['Sound', 'Sound'],
-          ['Speech', 'Speech'],
         ],
       ],
       rus: [
@@ -149,8 +147,6 @@ export class Keyboard {
           ['Space', 'Space'],
           ['←', '←'],
           ['→', '→'],
-          ['Sound', 'Sound'],
-          ['Speech', 'Speech'],
         ],
       ],
     };
@@ -224,8 +220,6 @@ export class Keyboard {
         'Space',
         'ArrowLeft',
         'ArrowRight',
-        'Sound',
-        'Speech',
       ],
     ];
     this.lang = 'eng';
@@ -245,8 +239,6 @@ export class Keyboard {
       'Space',
       'ArrowLeft',
       'ArrowRight',
-      'Sound',
-      'Speech',
     ];
     this.keys = null;
     this.keyboardRows = null;
@@ -284,23 +276,15 @@ export class Keyboard {
         const key = document.createElement('p');
         key.setAttribute('data-key-event-code', this.keyEventCodes[i][k]);
         key.classList.add(classNames.keyboardKey);
+
         let keyName = this.layout[this.lang][i][k][value];
+
         if (keyName.length > 1) {
           key.classList.add(`keyboard__${keyName.toLowerCase()}`);
         }
 
         if (keyName === 'Space') {
           keyName = ' ';
-        }
-
-        if (keyName === 'Sound') {
-          keyName = '';
-          key.classList.add(classNames.keyboardSoundIcon);
-        }
-
-        if (keyName === 'Speech') {
-          keyName = '';
-          key.classList.add(classNames.keyboardSpeechIcon);
         }
 
         key.innerText = keyName;
@@ -326,17 +310,6 @@ export class Keyboard {
   remove() {
     this.keyboardArea.remove();
   }
-
-  playSound = (url) => {
-    if (!this.sound) return;
-
-    const audio = new Audio(url);
-    audio.play();
-  };
-
-  toggleSound = () => {
-    this.sound = !this.sound;
-  };
 
   setLanguage() {
     if (!localStorage.lang) {
@@ -509,140 +482,6 @@ export class Keyboard {
 const keyboard = new Keyboard();
 keyboard.init();
 
-window.addEventListener('keydown', (event) => {
-  keyboard.keyEventCodes.forEach((elem) => {
-    if (elem.find((item) => item === event.code)) {
-      event.preventDefault();
-    }
-  });
-
-  const specialCode = keyboard.checkSpecialCode(event.code);
-  const key = document.querySelector(`[data-key-event-code = ${event.code}]`);
-
-  if (!key) return;
-
-  const keyCode = key.getAttribute('data-key-event-code');
-
-  switch (keyCode) {
-    case 'Delete':
-      keyboard.del();
-      break;
-
-    case 'Backspace':
-      keyboard.backspace();
-      break;
-
-    case 'CapsLock':
-      key.classList.toggle(classNames.keyboardKeyActive);
-      if (!keyboard.capsActive) {
-        keyboard.capsActive = true;
-        keyboard.capsLock();
-      } else {
-        keyboard.capsActive = false;
-        keyboard.capsLock();
-      }
-      break;
-
-    case 'ShiftRight':
-      if (!keyboard.uppercase) {
-        keyboard.uppercase = 1;
-        keyboard.shift();
-      } else {
-        keyboard.uppercase = 0;
-        keyboard.shift();
-      }
-      break;
-
-    case 'ShiftLeft':
-      if (!keyboard.uppercase) {
-        keyboard.uppercase = 1;
-        keyboard.shift();
-      } else {
-        keyboard.uppercase = 0;
-        keyboard.shift();
-      }
-      break;
-
-    case 'Enter':
-      keyboard.enter();
-      break;
-
-    case 'Tab':
-      keyboard.tab();
-      break;
-
-    case 'Space':
-      keyboard.space();
-      break;
-
-    case 'ArrowLeft':
-      keyboard.arrowLeft();
-      break;
-
-    case 'ArrowRight':
-      keyboard.arrowRight();
-      break;
-
-    case 'ControlLeft':
-      keyboard.pressleftCtrl(true);
-      break;
-
-    case 'AltLeft':
-      keyboard.pressAlt(true);
-      break;
-
-    default:
-      if (!specialCode) {
-        keyboard.typeKey(key.innerText);
-      }
-      break;
-  }
-
-  if (event.code !== 'CapsLock') {
-    key.classList.add(classNames.keyboardKeyActive);
-  }
-
-  if (keyboard.ctrl && keyboard.alt) {
-    if (keyboard.lang === 'eng') {
-      keyboard.lang = 'rus';
-      localStorage.setItem('lang', 'rus');
-    } else {
-      keyboard.lang = 'eng';
-      localStorage.setItem('lang', 'eng');
-    }
-    keyboard.switchLang();
-  }
-
-  const url = key.dataset.audio;
-  keyboard.playSound(url);
-  keyboard.textField.focus();
-});
-
-window.addEventListener('keyup', (event) => {
-  const key = document.querySelector(`[data-key-event-code = ${event.code}]`);
-
-  if (!key) return;
-
-  if (event.code !== 'CapsLock') {
-    key.classList.remove(classNames.keyboardKeyActive);
-  }
-
-  if (event.code === 'ShiftRight' || event.code === 'ShiftLeft') {
-    keyboard.uppercase = 0;
-    keyboard.shift();
-  }
-
-  if (event.code === 'ControlLeft') {
-    keyboard.pressleftCtrl(false);
-  }
-
-  if (event.code === 'AltLeft') {
-    keyboard.pressAlt(false);
-  }
-});
-
-// ///////////////////// Mose Events
-
 function mouseDownEvents(event) {
   if (!event.target.classList.contains(classNames.keyboardKey)) return;
 
@@ -672,10 +511,6 @@ function mouseDownEvents(event) {
         keyboard.capsActive = false;
         keyboard.capsLock();
       }
-      break;
-    case 'Sound':
-      event.target.classList.toggle(classNames.keyboardKeyActive);
-      keyboard.toggleSound();
       break;
 
     case 'ShiftRight':
@@ -735,8 +570,6 @@ function mouseDownEvents(event) {
       break;
   }
 
-  const url = event.target.dataset.audio;
-  keyboard.playSound(url);
   keyboard.textField.focus();
 }
 
@@ -758,11 +591,32 @@ function mouseupEvents() {
 function setKeyboardListeners() {
   keyboard.board.addEventListener('mouseup', mouseupEvents);
   keyboard.board.addEventListener('mousedown', mouseDownEvents);
+  keyboard.button.addEventListener('click', (e) => {
+    keyboard.board.classList.toggle('keyboard__visible');
+    e.target.classList.toggle('button__active');
+  });
+  const keyboardWraper = keyboard.board.parentNode;
+
+  keyboardWraper.addEventListener('mousedown', (e) => {
+    keyboard.movementOffset = {
+      x: e.pageX - keyboardWraper.offsetLeft,
+      y: e.pageY - keyboardWraper.offsetTop,
+    };
+  });
+
+  keyboardWraper.addEventListener('mousemove', (e) => {
+    if (!keyboard.movementOffset) {
+      return;
+    }
+    const { x, y } = keyboard.movementOffset;
+
+    keyboardWraper.style.left = `${e.pageX - x}px`;
+    keyboardWraper.style.top = `${e.pageY - y}px`;
+  });
+
+  keyboardWraper.addEventListener('mouseup', () => {
+    keyboard.movementOffset = false;
+  });
 }
 
 setKeyboardListeners();
-
-keyboard.button.addEventListener('click', (e) => {
-  keyboard.board.classList.toggle('keyboard__visible');
-  e.target.classList.toggle('button__active');
-});
