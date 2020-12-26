@@ -117,6 +117,7 @@ export default class List {
           .querySelector(`.${classNames.listResults}`)
           .append(listCountryWrapper);
       });
+      setCountry('');
       document
         .querySelector(`.${classNames.listResults}`)
         .addEventListener('click', (el) => {
@@ -201,7 +202,7 @@ export default class List {
 
   update = (country = this.country, options, selectedOption) => {
     const copyCovidDataForSort = [...this.covidData];
-    if (country !== undefined) {
+    if (country !== undefined && country.length !== 0) {
       let oneCountryData = this.covidData.find(
         (el) => el.Country.toLowerCase() === country.toLowerCase()
           && el.population !== undefined,
